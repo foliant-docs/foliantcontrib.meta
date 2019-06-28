@@ -1,3 +1,5 @@
+![](https://img.shields.io/pypi/v/foliantcontrib.meta.svg)
+
 # Metadata for Foliant
 
 This extension adds the `meta generate` command to Foliant, which generates the yaml-file with project metadata. It also allows to add other meta commands `meta <command>` which use the generated metadata.
