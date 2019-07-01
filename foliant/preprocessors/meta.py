@@ -34,6 +34,8 @@ class Preprocessor(BasePreprocessor):
                 for key, val in yfm.items():
                     if key in seeds:
                         result += '\n\n' + seeds[key].replace('{value}', val)
+                        self.logger.debug(f'Processing seed {key},'
+                                          f' value to plant: {result}')
             return result
         return pattern.sub(sub, content)
 
@@ -42,8 +44,10 @@ class Preprocessor(BasePreprocessor):
         Process all meta blocks:
         remove those which represent sections, leave YFMs, and add seeds
         '''
+        self.logger.debug('Processing seeds for main section.')
         result = self.add_seeds(content, YFM_PATTERN, leave_meta=True)
-        result = self.add_seeds(content, SECTION_PATTERN, leave_meta=False)
+        self.logger.debug('Processing seeds for subsections.')
+        result = self.add_seeds(result, SECTION_PATTERN, leave_meta=False)
         return result
 
     def apply(self):
