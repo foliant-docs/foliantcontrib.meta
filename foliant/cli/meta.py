@@ -42,7 +42,7 @@ class Cli(BaseCli):
         if meta_command not in available_meta_commands:
             raise MetaCommandError(
                 f'Meta command {meta_command} not found. ' +
-                f'Available commands are {", ".join(available_meta_commands)}.'
+                f'Available commands are: {", ".join(available_meta_commands)}.'
             )
 
         return True

@@ -27,7 +27,10 @@ class Preprocessor(BasePreprocessor):
         if leave_meta is False, the yaml definition of meta will be removed.
         '''
         def sub(match):
-            result = match.group(0) if leave_meta else ''
+            # Leave title for subsectinos
+            result = match.group('title') if 'title' in match.groupdict() else ''
+            if leave_meta:
+                result += f'\n\n---{match.group("yaml")}---'
             seeds = self.options['seeds']
             yfm = load(match.group('yaml'), Loader) or {}
             if seeds:
@@ -36,7 +39,7 @@ class Preprocessor(BasePreprocessor):
                         result += '\n\n' + seeds[key].replace('{value}', val)
                         self.logger.debug(f'Processing seed {key},'
                                           f' value to plant: {result}')
-            return result
+            return result.lstrip()
         return pattern.sub(sub, content)
 
     def process_meta_blocks(self, content: str) -> str:
