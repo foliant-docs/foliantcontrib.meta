@@ -10,7 +10,8 @@ from foliant.meta_commands.generate import YFM_PATTERN, SECTION_PATTERN
 
 class Preprocessor(BasePreprocessor):
     defaults = {
-        'seeds': {}  # contains a format-string with optional {value} placeholder
+        'seeds': {},  # contains a format-string with optional {value} placeholder
+        'delete_meta': False,
     }
 
     def __init__(self, *args, **kwargs):
@@ -36,9 +37,9 @@ class Preprocessor(BasePreprocessor):
             if seeds:
                 for key, val in yfm.items():
                     if key in seeds:
-                        result += '\n\n' + seeds[key].replace('{value}', val)
-                        self.logger.debug(f'Processing seed {key},'
-                                          f' value to plant: {result}')
+                        result += '\n\n' + seeds[key].format(value=val)
+                        self.logger.debug(f'Processing seed {key}, '
+                                          f'value to plant: {result}')
             return result.lstrip()
         return pattern.sub(sub, content)
 
@@ -48,7 +49,7 @@ class Preprocessor(BasePreprocessor):
         remove those which represent sections, leave YFMs, and add seeds
         '''
         self.logger.debug('Processing seeds for main section.')
-        result = self.add_seeds(content, YFM_PATTERN, leave_meta=True)
+        result = self.add_seeds(content, YFM_PATTERN, leave_meta=(not self.options['delete_meta']))
         self.logger.debug('Processing seeds for subsections.')
         result = self.add_seeds(result, SECTION_PATTERN, leave_meta=False)
         return result
@@ -62,7 +63,9 @@ class Preprocessor(BasePreprocessor):
             with open(markdown_file_path, encoding='utf8') as markdown_file:
                 content = markdown_file.read()
 
+            processed_content = self.process_meta_blocks(content)
+
             with open(markdown_file_path, 'w', encoding='utf8') as markdown_file:
-                markdown_file.write(self.process_meta_blocks(content))
+                markdown_file.write(processed_content)
 
         self.logger.info('Preprocessor applied')

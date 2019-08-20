@@ -1,3 +1,7 @@
+# 1.0.3
+
+- Add span to meta
+
 # 1.0.2
 
 - Fix: subsections title may be specified in YFM;
@@ -11,3 +15,6 @@
 # 1.0.0
 
 Initial release.
+<!-- meta section start glossary.md:main -->
+
+<!-- meta section start glossary.md:main -->

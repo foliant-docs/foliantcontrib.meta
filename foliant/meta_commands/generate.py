@@ -7,12 +7,17 @@ import os
 from pathlib import Path, PosixPath
 from logging import Logger
 from foliant.meta_commands.base import BaseMetaCommand
+from .meta import Meta
 
 
 YFM_PATTERN = re.compile(r'^\s*---(?P<yaml>.+?\n)---', re.DOTALL)
 SECTION_PATTERN =\
     re.compile(r'^(?P<title>#+ .+?)\n\s*---\n(?P<yaml>(?:[^\n]+\n)*)---',
                re.MULTILINE)
+
+
+def get_mark(mode, chapter, section: str) -> str:
+    return '\n\n<!-- meta {mode} {chapter}:{section} -->\n\n'.format(**locals())
 
 
 def generate_meta(context: dict, logger: Logger):
@@ -23,7 +28,7 @@ def generate_meta(context: dict, logger: Logger):
     '''
     meta_command = MetaCommand(context, logger)
     meta_command.run()
-    return meta_command.options['filename']
+    return Meta(meta_command.options['filename'])
 
 
 def flatten_seq(seq):
@@ -129,13 +134,23 @@ def get_meta_for_chapter(ch_name: str, content: str) -> dict:
 
     # adding main section
     section = chap_dict['sections']['main']
-    yfm = get_yfm(content) or {}
+    yfm_match = re.search(YFM_PATTERN, content)
+    if yfm_match:
+        yfm = yaml.load(yfm_match.group('yaml'), yaml.Loader)
+        start = yfm_match.end()
+    else:
+        yfm = {}
+        start = 0
     section['yfm'] = yfm
     section['title'] = get_main_title(content, yfm, ch_name)
 
     # adding chapter sections
     counter = 0
     for match in SECTION_PATTERN.finditer(content):
+        # add span to previous section
+        section['span'] = [start, match.start()]
+        start = match.start()
+
         counter += 1
         yfm = yaml.load(match.group('yaml'), yaml.Loader) or {}
         section = {'yfm': yfm,
@@ -146,6 +161,8 @@ def get_meta_for_chapter(ch_name: str, content: str) -> dict:
             section_key += '_'
 
         chap_dict['sections'][section_key] = section
+    # add span to the last section (eof)
+    section['span'] = [start, len(content)]
     return chap_dict
 
 
