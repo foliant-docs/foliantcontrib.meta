@@ -7,17 +7,13 @@ import os
 from pathlib import Path, PosixPath
 from logging import Logger
 from foliant.meta_commands.base import BaseMetaCommand
-from .meta import Meta
+from foliant.cli.meta.classes import Meta
 
 
 YFM_PATTERN = re.compile(r'^\s*---(?P<yaml>.+?\n)---', re.DOTALL)
 SECTION_PATTERN =\
     re.compile(r'^(?P<title>#+ .+?)\n\s*---\n(?P<yaml>(?:[^\n]+\n)*)---',
                re.MULTILINE)
-
-
-def get_mark(mode, chapter, section: str) -> str:
-    return '\n\n<!-- meta {mode} {chapter}:{section} -->\n\n'.format(**locals())
 
 
 def generate_meta(context: dict, logger: Logger):
@@ -89,9 +85,11 @@ def get_yfm(content: str):
     match = re.search(YFM_PATTERN, content)
     if match:
         return yaml.load(match.group('yaml'), yaml.Loader)
+    else:
+        return {}
 
 
-def get_main_title(content: str, yfm: dict, ch_name: str):
+def get_title(content: str, yfm: dict, ch_name: str):
     '''Return proper title of the main section:
 
     If field 'title' is in yfm — return its value;
@@ -109,60 +107,20 @@ def get_main_title(content: str, yfm: dict, ch_name: str):
         return Path(ch_name).stem
 
 
-def get_section_title(match, yfm: dict):
-    '''Return proper title of the section:
-
-    If field 'title' is in yfm — return its value;
-    If not — return the heading of the section.
-    '''
-    if 'title' in yfm:
-        return yfm['title']
-    else:
-        return match.group('title').lstrip('# ')
-
-
 def get_meta_for_chapter(ch_name: str, content: str) -> dict:
     '''
-    Get all metadata for one chapter.
+    Get metadata for one chapter.
 
-    Returns a chapter dictionary with all sections, mentioned in the md-file.
+    Returns a chapter dictionary.
     '''
     chap_dict = {
-        'name': ch_name,
-        'sections': {'main': {}}
+        'chapter': ch_name,
+        'yfm': get_yfm(content),
     }
+    chap_dict['title'] = get_title(content,
+                                   chap_dict['yfm'],
+                                   ch_name)
 
-    # adding main section
-    section = chap_dict['sections']['main']
-    yfm_match = re.search(YFM_PATTERN, content)
-    if yfm_match:
-        yfm = yaml.load(yfm_match.group('yaml'), yaml.Loader)
-        start = yfm_match.end()
-    else:
-        yfm = {}
-        start = 0
-    section['yfm'] = yfm
-    section['title'] = get_main_title(content, yfm, ch_name)
-
-    # adding chapter sections
-    counter = 0
-    for match in SECTION_PATTERN.finditer(content):
-        # add span to previous section
-        section['span'] = [start, match.start()]
-        start = match.start()
-
-        counter += 1
-        yfm = yaml.load(match.group('yaml'), yaml.Loader) or {}
-        section = {'yfm': yfm,
-                   'title': get_section_title(match, yfm)}
-
-        section_key = section['yfm'].get('section', f'section_{counter}')
-        while section_key in chap_dict['sections']:
-            section_key += '_'
-
-        chap_dict['sections'][section_key] = section
-    # add span to the last section (eof)
-    section['span'] = [start, len(content)]
     return chap_dict
 
 

@@ -1,3 +1,8 @@
+# 1.1.0
+
+- Remove the sections entity.
+- Restructure code.
+
 # 1.0.3
 
 - Add span to meta

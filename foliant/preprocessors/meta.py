@@ -5,7 +5,7 @@ Removes section meta-data from the document and adds seeds.
 from yaml import load, Loader
 
 from foliant.preprocessors.base import BasePreprocessor
-from foliant.meta_commands.generate import YFM_PATTERN, SECTION_PATTERN
+from foliant.meta_commands.generate import YFM_PATTERN
 
 
 class Preprocessor(BasePreprocessor):
@@ -28,8 +28,7 @@ class Preprocessor(BasePreprocessor):
         if leave_meta is False, the yaml definition of meta will be removed.
         '''
         def sub(match):
-            # Leave title for subsectinos
-            result = match.group('title') if 'title' in match.groupdict() else ''
+            result = ''
             if leave_meta:
                 result += f'\n\n---{match.group("yaml")}---'
             seeds = self.options['seeds']
@@ -50,8 +49,6 @@ class Preprocessor(BasePreprocessor):
         '''
         self.logger.debug('Processing seeds for main section.')
         result = self.add_seeds(content, YFM_PATTERN, leave_meta=(not self.options['delete_meta']))
-        self.logger.debug('Processing seeds for subsections.')
-        result = self.add_seeds(result, SECTION_PATTERN, leave_meta=False)
         return result
 
     def apply(self):

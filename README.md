@@ -24,20 +24,6 @@ key: value
 ---
 ```
 
-You can also specify metadata in the middle of the document. In this case it should appear just after a heading of any level:
-
-```yaml
-## System protocol description
-
----
-title: System protocol
-relates: MAIN_DOC
----
-
-```
-
-Each new metadata block means a new section of the chapter.
-
 ## `meta generate` command
 
 ### Usage
@@ -64,11 +50,11 @@ meta:
 
 ## `meta` preprocessor
 
-`meta` preprocessor is necessary if you add metadata into the middle of your documents: it removes the metadata blocks before building the document so it won't get to the result.
+`meta` preprocessor allows you to remove metadata from your Markdown source files before build. It may be necessary if some backend doesn't accept the YAML Front Matter syntax.
 
 This preprocessor also offers you a feature which we call *seeds*:
 
-Seeds are little string templates which will appear after the metadata block in the resulting document, if specific keys were mentioned in the metadata. Details in the **Seeds** section.
+Seeds are little string templates which will may be used to add some text after the metadata block in the resulting document, if specific keys were mentioned in the metadata. Details in the **Seeds** section.
 
 ### Usage
 
@@ -77,37 +63,45 @@ Add `meta` preprocessor to your `preprocessors` section of foliant.yml and speci
 ```yaml
 preprocessors:
     - meta:
+        delete_meta: true
         seeds:
             section: '*Section "{value}"*'
             id: <anchor>{value}</anchor>
 ```
 
+`delete_meta`
+:   If set to `true` — metadata block will be deleted from the document before build. Default: `false`
+
+`seeds`
+:   Seeds dictionary. Details in the next section.
+
 ### Seeds
 
-Seeds allow you to add small chunks of text based on specific keys mentioned in the metadata block. For example, if you wish to add a small subcaption at the beginning of every section, which will use this section's name, add a `section` seed:
+Seeds allow you to add small chunks of text based on specific keys mentioned in the metadata block. For example, if you wish to add a small subcaption at the beginning of the document, which will use this document's title, add the `title` seed:
 
 ```yaml
 preprocessors:
     - meta:
         seeds:
-            section: '*Section "{value}"*'
+            title: '*Section "{value}"*'
 ```
 
 If we have a meta block like this in our document:
 
 ```yaml
-# Terms of use
 ---
 ID: legal_info
 relates: index.md
-section: Legal information
+title: Legal information
 ---
-```
 
-Preprocessor will notice that `section` key was used in the meta block, and will add the seed with `{value}` placeholder replaced by the value of the `section` field:
-
-```
 # Terms of use
+```
 
+Preprocessor will notice that `title` key was used in the meta block, and will add the seed with `{value}` placeholder replaced by the value of the `title` field:
+
+```
 *Section "Legal information"
+
+# Terms of use
 ```

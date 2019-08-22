@@ -15,11 +15,11 @@ setup(
     description=SHORT_DESCRIPTION,
     long_description=LONG_DESCRIPTION,
     long_description_content_type='text/markdown',
-    version='1.0.3',
+    version='1.1.0',
     author='Daniil Minukhin',
     author_email='ddddsa@gmail.com',
     url='https://github.com/foliant-docs/foliantcontrib.meta',
-    packages=['foliant.cli', 'foliant.meta_commands', 'foliant.preprocessors'],
+    packages=['foliant.cli.meta', 'foliant.meta_commands', 'foliant.preprocessors'],
     license='MIT',
     platforms='any',
     install_requires=[
