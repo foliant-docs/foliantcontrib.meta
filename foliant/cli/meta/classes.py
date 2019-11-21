@@ -6,6 +6,8 @@ import re
 from schema import Schema, Optional
 from pathlib import Path, PosixPath
 
+from .utils import convert_to_id, remove_meta
+
 
 SECTION_SCHEMA = Schema(
     {
@@ -13,20 +15,23 @@ SECTION_SCHEMA = Schema(
         'start': int,
         'end': int,
         'level': int,
-        Optional('id'): str,
+        'id': str,
         Optional('children', default=[]): [dict],
         Optional('data', default={}): dict
     }
 )
 
 META_SCHEMA = Schema(
-    [
-        {
-            'name': str,
-            'section': SECTION_SCHEMA,
-            'filename': str
-        }
-    ]
+    {
+        'version': str,
+        'chapters': [
+            {
+                'name': str,
+                'section': SECTION_SCHEMA,
+                'filename': str
+            }
+        ]
+    }
 )
 
 
@@ -66,9 +71,10 @@ class Section:
 
     def add_child(self, section):
         '''
-        Check that potential child has a higher level and add it to the children
-        list attribute. Also set its chapter to be the same of this section's
-        chapter and specify this section as child's parent.
+        - Check that potential child has a higher level and add it to the children
+        list attribute.
+        - Also set its chapter to be the same as this section's chapter
+        - and specify this section as child's parent.
 
         :param section: a Section object to be added as a child
         '''
@@ -107,23 +113,15 @@ class Section:
             yield child
             yield from child.iter_children()
 
-    def get_source(self, remove_meta=True):
+    def get_source(self, without_meta=True):
         '''
         Get section source text.
 
-        :param remove_meta: if True — all meta tags will be removed from the
-                            source.
+        :param without_meta: if True — all meta tags will be removed from the
+                             returned source.
 
         :returns: section source
         '''
-        def remove_meta(source: str):
-            ''':returns: source string with meta tags removed'''
-            META_TAG_PATTERN = re.compile(
-                rf'(?<!\<)\<meta(\s(?P<options>[^\<\>]*))?\>' +
-                rf'(?P<body>.*?)\<\/meta\>',
-                flags=re.DOTALL
-            )
-            return META_TAG_PATTERN.sub('', source)
 
         if not self.chapter:
             raise MetaChapterNotAssignedError('Chapter is not assigned. Can\'t determine filename.')
@@ -131,7 +129,7 @@ class Section:
             chapter_source = f.read()
 
         source = chapter_source[self.start: self.end]
-        if remove_meta:
+        if without_meta:
             source = remove_meta(source)
         return source
 
@@ -142,9 +140,11 @@ class Section:
 
 class Chapter:
     def __init__(self, filename: str, name: str, main_section: Section = None):
-        self._main_section = Section
         self.name = name
         self.filename = filename
+        self._main_section = None
+        if main_section:
+            self.main_section = main_section
 
     @property
     def main_section(self):
@@ -154,6 +154,28 @@ class Chapter:
     def main_section(self, value: Section):
         self._main_section = value
         self._main_section.chapter = self
+        if not self._main_section.title:
+            self._main_section.title = self.name
+
+    def get_section_by_offset(self, offset: int) -> Section:
+        '''
+        Get the lowest-level meta-section for the place in text described by
+        offset.
+
+        :param offset: offset of the place in source
+
+        :returns: section for the requested place in text.
+        '''
+        if offset > self.main_section.end:
+            raise IndexError("Offset cannot be bigger than the chapter's length"
+                             f" ({offset} > {self.main_section.end})")
+        result = None
+        for section in self.iter_sections():
+            if (section.start <= offset) and (section.end > offset):
+                result = section
+            if section.start > offset:
+                break
+        return result
 
     def to_dict(self):
         ''' :returns: a dictionary ready to be saved into yaml-file'''
@@ -172,46 +194,13 @@ class Chapter:
         return f'<{self.__class__.__name__}: {self.name}>'
 
 
-def convert_to_id(title: str, existing_ids: list) -> str:
-    '''
-    (based on convert_to_anchor function from apilinks preprocessor)
-    Convert heading into id. Guaranteed to be unique among `existing_ids`.
-
-    >>> convert_to_id('GET /endpoint/method{id}')
-    'get-endpoint-method-id'
-    '''
-
-    id_ = ''
-    accum = False
-    for char in title:
-        if char == '_' or char.isalnum():
-            if accum:
-                accum = False
-                id_ += f'-{char.lower()}'
-            else:
-                id_ += char.lower()
-        else:
-            accum = True
-    id_ = id_.strip(' -')
-
-    counter = 1
-    result = id_
-    while result in existing_ids:
-        counter += 1
-        result = '-'.join([id_, str(counter)])
-    existing_ids.append(result)
-    return result
-
-
 class Meta:
-    def __init__(self,
-                 filename: str or PosixPath or None = None):
+    syntax_version = '1.0'
+
+    def __init__(self):
         self.data = []
         self.chapters = []
-        if filename and Path(filename).exists():
-            self.load_meta_from_file(filename)
-        else:
-            self.filename = None
+        self.filename = None
 
     def load_meta_from_file(self, filename: str or PosixPath):
         '''
@@ -248,12 +237,14 @@ class Meta:
             unchecked_data = yaml.load(f, yaml.Loader)
         self.data = META_SCHEMA.validate(unchecked_data)
 
-        for chapter_dict in self.data:
+        for chapter_dict in self.data['chapters']:
             chapter = Chapter(filename=chapter_dict['filename'],
                               name=chapter_dict['name'])
             chapter.main_section = load_section(section_dict=chapter_dict['section'],
                                                 chapter=chapter)
             self.chapters.append(chapter)
+
+        self.process_ids()
 
     def add_chapter(self, chapter: Chapter):
         '''
@@ -271,8 +262,11 @@ class Meta:
         for chapter in self.chapters:
             yield from chapter.iter_sections()
 
-    def fillup_missing_info(self):
-        '''Fill up missing sections info like titles and ids from their properties.'''
+    def process_ids(self):
+        '''
+        Validate section ids for dublicates;
+        Fill up missing section ids based on their titles.
+        '''
         ids = []
         for section in self.iter_sections():
             if 'id' in section.data:
@@ -282,12 +276,8 @@ class Meta:
                     section.id = section.data['id']
                     ids.append(section.id)
 
-        for chapter in self.chapters:
-            if not chapter.main_section.title:
-                chapter.main_section.title = chapter.name
-
         for section in self.iter_sections():
-            if not section.id:
+            if section.id is None:
                 section.id = convert_to_id(section.title, ids)
                 ids.append(section.id)
 
@@ -307,9 +297,10 @@ class Meta:
 
     def dump(self):
         '''
-        :returns: a list of chapter dicts ready to be saved into yaml-file
+        :returns: a meta dictionary ready to be saved into yaml-file
         '''
-        return [ch.to_dict() for ch in self.chapters]
+        return {'version': self.syntax_version,
+                'chapters': [ch.to_dict() for ch in self.chapters]}
 
     def __repr__(self):
         return f'<{self.__class__.__name__}: {self.filename or "file name not specified"}>'

@@ -19,7 +19,10 @@ setup(
     author='Daniil Minukhin',
     author_email='ddddsa@gmail.com',
     url='https://github.com/foliant-docs/foliantcontrib.meta',
-    packages=['foliant.cli.meta', 'foliant.meta_commands', 'foliant.meta_commands.generate', 'foliant.preprocessors'],
+    packages=['foliant.cli.meta',
+              'foliant.meta_commands',
+              'foliant.meta_commands.generate',
+              ],
     license='MIT',
     platforms='any',
     install_requires=[

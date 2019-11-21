@@ -1,15 +1,19 @@
-from logging import Logger
-
-from foliant.cli.meta.classes import Meta
 from .command import MetaCommand
 
 
-def generate_meta(context: dict, logger: Logger):
+def update_meta(context: dict, logger):
     '''
-    Helper function to generate meta.yml to be run from anywhere
+    Helper function to generate and update meta.yml to be run from anywhere
 
-    Returns meta filename (relative to project root).
+    :returns: meta filename (relative to project root).
     '''
     meta_command = MetaCommand(context, logger)
     meta_command.run()
-    return Meta(meta_command.options['filename'])
+    return meta_command.meta
+
+
+def generate_meta(context, logger):
+    '''
+    for backward compatibility
+    '''
+    update_meta(context, logger)

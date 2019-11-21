@@ -4,8 +4,6 @@
 
 This extension adds the `meta generate` command to Foliant, which generates the yaml-file with project metadata. It also allows to add other meta commands `meta <command>` which use the generated metadata.
 
-It also adds the preprocessor `meta` which removes metadata blocks from the documents before builds and allows inserting formatted strings on the place of meta blocks, based on specific metadata keys.
-
 ## Installation
 
 ```bash
@@ -14,7 +12,7 @@ $ pip install foliantcontrib.meta
 
 ## Specifying metadata
 
-Metadata may be specified in the beginning of a Markdown-file using [YAML Front Matter](http://www.yaml.org/spec/1.2/spec.html#id2760395) format:
+Metadata for the *main section* (more on sections in **User's Guide** below) may be specified in the beginning of a Markdown-file using [YAML Front Matter](http://www.yaml.org/spec/1.2/spec.html#id2760395) format:
 
 ```yaml
 ---
@@ -23,6 +21,19 @@ title: Description of the product
 key: value
 ---
 ```
+
+You may also use regular XML-like format with `meta` tag:
+
+```html
+<meta
+    id="MAIN_DOC"
+    title="Description of the product"
+    key="value">
+</meta>
+```
+
+> If `meta` tag is present, all Metadata from YAML Front Matter is ignored.
+
 
 ## `meta generate` command
 
@@ -48,60 +59,42 @@ meta:
 `filename`
 :   name of the YAML-file with generated project metadata.
 
-## `meta` preprocessor
+# User's guide
 
-`meta` preprocessor allows you to remove metadata from your Markdown source files before build. It may be necessary if some backend doesn't accept the YAML Front Matter syntax.
+Metadata allows you to specific properties to your documents, which won't be visible directly to the end-user. These properties may be:
 
-This preprocessor also offers you a feature which we call *seeds*:
+- the document author's name;
+- Jira ticket id;
+- date of last revision;
+- or anything else, there is not limitation.
 
-Seeds are little string templates which will may be used to add some text after the metadata block in the resulting document, if specific keys were mentioned in the metadata. Details in the **Seeds** section.
+This module is required for metadata to work in your projects. But it doesn't care about most of the fields and their values. The only exception being the `id` field. See **Special fields** section.
 
-### Usage
+# Sections
 
-Add `meta` preprocessor to your `preprocessors` section of foliant.yml and specify all your seeds:
+You can specify metadata for a whole chapter and for it's portions, which are called *sections*. Section is a fragment of the document from one heading to another one of the same level of higher.
 
-```yaml
-preprocessors:
-    - meta:
-        delete_meta: true
-        seeds:
-            section: '*Section "{value}"*'
-            id: <anchor>{value}</anchor>
-```
+Metadata, specified at the beginning of the document (before the first heading), is applied to the whole Markdown document. We call it the *main section* of the chapter.
 
-`delete_meta`
-:   If set to `true` — metadata block will be deleted from the document before build. Default: `false`
+> Note that you can specify metadata for the main section either in YAML Front Matter format, or with `meta` tag.
 
-`seeds`
-:   Seeds dictionary. Details in the next section.
+If you specify metadata after the heading of some level, it will be applied to all content inside this heading, including all other nested headings. See the illustration below.
 
-### Seeds
+![](img/pic1.png)
 
-Seeds allow you to add small chunks of text based on specific keys mentioned in the metadata block. For example, if you wish to add a small subcaption at the beginning of the document, which will use this document's title, add the `title` seed:
+# Special fields
 
-```yaml
-preprocessors:
-    - meta:
-        seeds:
-            title: '*Section "{value}"*'
-```
+Right now there's only one field that is treated specially: the `id` field.
 
-If we have a meta block like this in our document:
+If specified, it will used as identificator of the section. Note that IDs must be unique within the whole project.
 
-```yaml
----
-ID: legal_info
-relates: index.md
-title: Legal information
----
+If `id` field is omited — the section will get auto generated id based on:
 
-# Terms of use
-```
+- chapter filename for main section,
+- title for general sections.
 
-Preprocessor will notice that `title` key was used in the meta block, and will add the seed with `{value}` placeholder replaced by the value of the `title` field:
+# Additional info
 
-```
-*Section "Legal information"
+Metadata works only for files, mentioned in the `chapters` section in foliant.yml. All other files in `src` dir are ignored.
 
-# Terms of use
-```
+When using [includes](https://foliant-docs.github.io/docs/preprocessors/includes/), all metadata from the included content is removed.

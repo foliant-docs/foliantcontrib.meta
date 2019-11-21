@@ -1,26 +1,43 @@
-from pathlib import Path, PosixPath
-from .classes import Chapter, Section
+from foliant.meta_commands.generate.patterns import META_TAG_PATTERN, YFM_PATTERN
 
 
-def get_source(chapter: Chapter, src_dir: str or PosixPath) -> str:
-    '''get source of a chapter'''
-    chapter_file = Path(src_dir) / chapter.name
-    with open(chapter_file, encoding='utf8') as f:
-        return f.read()
+def convert_to_id(title: str, existing_ids: list) -> str:
+    '''
+    (based on convert_to_anchor function from apilinks preprocessor)
+    Convert heading into id. Guaranteed to be unique among `existing_ids`.
+
+    >>> convert_to_id('GET /endpoint/method{id}')
+    'get-endpoint-method-id'
+    '''
+
+    id_ = ''
+    accum = False
+    for char in title:
+        if char == '_' or char.isalnum():
+            if accum:
+                accum = False
+                id_ += f'-{char.lower()}'
+            else:
+                id_ += char.lower()
+        else:
+            accum = True
+    id_ = id_.strip(' -')
+
+    counter = 1
+    result = id_
+    while result in existing_ids:
+        counter += 1
+        result = '-'.join([id_, str(counter)])
+    existing_ids.append(result)
+    return result
 
 
-def get_section_source(section: Section, src_dir: str or PosixPath) -> str:
-    '''get source of a chapter'''
-    chapter_source = get_source(section.chapter, src_dir)
-    return chapter_source[section.start: section.end]
+def remove_meta(source: str):
+    ''':returns: source string with meta tags removed'''
+    result = YFM_PATTERN.sub('', source)
+    result = META_TAG_PATTERN.sub('', result)
+    return result
 
 
-def get_processed(chapter: Chapter, working_dir: str or PosixPath) -> str:
-    '''get processed chapter text'''
-    chapter_file = Path(working_dir) / chapter.name
-    with open(chapter_file, encoding='utf8') as f:
-        return f.read()
-
-
-def get_processed_section(section: Section, working_dir: str or PosixPath) -> str:
-    chapter_content = get_processed(section.chapter, working_dir)
+def get_processed(*args, **kwargs):
+    raise RuntimeError('Please update Confluence backend to the latest version!')

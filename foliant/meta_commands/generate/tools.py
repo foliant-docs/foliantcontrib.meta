@@ -1,4 +1,8 @@
+import yaml
+
 from pathlib import Path, PosixPath
+from .patterns import (YFM_PATTERN, META_TAG_PATTERN, OPTION_PATTERN,
+                       HEADER_PATTERN, CHUNK_PATTERN)
 
 
 def flatten_seq(seq):
@@ -52,3 +56,72 @@ class FlatChapters:
     def paths(self):
         """Flat list of PosixPath objects relative to project root."""
         return (self._parent_dir / chap for chap in self.flat)
+
+
+def get_meta_dict_from_yfm(source: str) -> dict:
+    '''Look for YAML Front Matter and return resulting dict'''
+    data = None
+    yfm_match = YFM_PATTERN.search(source)
+    if yfm_match:
+        data = yaml.load(yfm_match.group('yaml'), yaml.Loader)
+    return data or {}
+
+
+def get_meta_dict_from_meta_tag(source: str) -> dict or None:
+    '''
+    Look for meta tags in the source resulting dict of metadata.
+    If there are no meta tags in source — return None.
+
+    :param source: section source without title
+
+    :returns: meta dict or None if no meta tags in section.
+    '''
+    data = None
+    meta_match = META_TAG_PATTERN.search(source)
+    if meta_match:
+        option_string = meta_match.group('options')
+        if not option_string:
+            data = {}
+        else:
+            data = {option.group('key'): yaml.load(option.group('value'),
+                                                   yaml.Loader)
+                    for option in OPTION_PATTERN.finditer(option_string)}
+    return data
+
+
+def get_header_content(source: str) -> str:
+    '''
+    Search source for header (content before first heading) and return it.
+    If there's no first heading — return the whole source.
+
+    TODO: the pattern breaks on a commented line in YFM
+    '''
+    main_match = HEADER_PATTERN.search(source)
+    if main_match:
+        return main_match.group('content')
+    else:
+        return source
+
+
+def iter_chunks(source: str):
+    '''
+    Split source string by headings and return each heading with its content
+    and level.
+
+    :param source: source string to parse.
+
+    :returns: iterator yielding tuple:
+        (heading title,
+         heading level,
+         heading content,
+         start position,
+         end position)
+
+    TODO: seems that this pattern also is far from perfect
+    '''
+    for chunk in CHUNK_PATTERN.finditer(source):
+        yield (chunk.group('title'),
+               len(chunk.group('level')),
+               chunk.group('content'),
+               chunk.start(),
+               chunk.end())

@@ -1,3 +1,8 @@
+# 1.2.0
+
+- Support sections
+- meta.yml format restructure
+
 # 1.1.0
 
 - Remove the sections entity.
@@ -20,6 +25,3 @@
 # 1.0.0
 
 Initial release.
-<!-- meta section start glossary.md:main -->
-
-<!-- meta section start glossary.md:main -->

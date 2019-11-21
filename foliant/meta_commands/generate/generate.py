@@ -1,27 +1,20 @@
-import re
-import yaml
-
 from pathlib import PosixPath
-from .tools import FlatChapters
+from .tools import (FlatChapters, get_meta_dict_from_yfm,
+                    get_meta_dict_from_meta_tag, iter_chunks,
+                    get_header_content)
 from foliant.cli.meta.classes import Meta, Chapter, Section
-
-YFM_PATTERN = re.compile(r'^\s*---(?P<yaml>.+?\n)---', re.DOTALL)
-
-META_TAG_PATTERN = re.compile(
-    rf'(?<!\<)\<meta(\s(?P<options>[^\<\>]*))?\>' +
-    rf'(?P<body>.*?)\<\/meta\>',
-    flags=re.DOTALL
-)
-OPTION_PATTERN = re.compile(
-    r'(?P<key>[A-Za-z_:][0-9A-Za-z_:\-\.]*)=(\'|")(?P<value>.+?)\2',
-    flags=re.DOTALL
-)
 
 
 class Chunk:
+    '''
+    Mini-class for a part of MD-source from one heading to the next of same
+    or lower level
+    '''
+
     __slots__ = ['title', 'level', 'content', 'start', 'end']
 
-    def __init__(self, title, level, content, start, end):
+    def __init__(self, title: str, level: int,
+                 content: str, start: int, end: int):
         self.title = title
         self.level = level
         self.content = content
@@ -32,59 +25,38 @@ class Chunk:
         return f'<Chunk: [{self.level}] {self.title[:15]}>'
 
 
-def get_section(chunk: Chunk):
-    data = None
+def get_section(chunk: Chunk) -> Section or None:
+    '''
+    Parse chunk content and create a Section object from its metadata.
+    If no metadata in chunk — return None.
+    '''
+    yfm_data = None
     if chunk.level == 0:  # main section
-        data = {}  # main section must always be present
-        yfm_match = YFM_PATTERN.search(chunk.content)
-        if yfm_match:
-            data = yaml.load(yfm_match.group('yaml'), yaml.Loader)
-    meta_match = META_TAG_PATTERN.search(chunk.content)
-    if meta_match:
-        option_string = meta_match.group('options')
-        if not option_string:
-            data = {}
-        else:
-            data = {option.group('key'): yaml.load(option.group('value'),
-                                                   yaml.Loader)
-                    for option in OPTION_PATTERN.finditer(option_string)}
+        # main section must always be present in header (0-level chunk), but it
+        # may be overriden by metadata in <meta> tag, which has higher priority
+        yfm_data = get_meta_dict_from_yfm(chunk.content)
+
+    tag_data = get_meta_dict_from_meta_tag(chunk.content)
+
+    data = tag_data if tag_data is not None else yfm_data
+
     if data is not None:
         result = Section(chunk.level, chunk.start, chunk.end,
                          data, title=chunk.title)
         return result
 
 
-def split_by_headings(content: str):
+def fix_chunk_ends(chunks: list):
     '''
-    Split content string into Chunk objects by headings. Return a tuple of
-    (header, chunks), where header is a Chunk object for header (content before
-    first heading), and chunks is a list of Chunk objects for other headings.
+    Fix chunks `end` parameter (in place).
+
+    After splitting content into chunks each chunk's end parameter value is
+    the beginning of next heading. We need to fix that to the beginning of
+    the next heading _of the same or higher level_.
+
+    :param chunks: list of Chunk objects to be fixed
     '''
 
-    # TODO: this pattern breaks on a commented line in YFM
-    main_pattern = re.compile(r'^(?P<content>[\s\S]*?)(?=^#+ .+)',
-                              flags=re.MULTILINE)
-    main_match = main_pattern.search(content)
-    if main_match:
-        header = Chunk('', 0, main_match.group('content'), 0, len(content))
-    else:  # there are no headings in the chapter. Taking whole content as header
-        header = Chunk('', 0, content, 0, len(content))
-
-    chunks = []
-    # TODO: seems that this patter also is far from perfect
-    heading_section_pattern = \
-        re.compile(r'^(?P<level>#+) (?P<title>.+)\n(?P<content>(?:\n[^#]*)+)',
-                   flags=re.MULTILINE)
-    for heading_section in heading_section_pattern.finditer(content):
-        chunk = Chunk(heading_section.group('title'),
-                      len(heading_section.group('level')),
-                      heading_section.group('content'),
-                      heading_section.start(),
-                      heading_section.end())
-        chunks.append(chunk)
-
-    # setting proper `end` parameters. For each heading `end` parameter is the
-    # `start` of the heading of the same level or higher
     for i in range(len(chunks) - 1):
         j = i + 1
         while (chunks[j].level > chunks[i].level):
@@ -93,38 +65,35 @@ def split_by_headings(content: str):
                 break
         chunks[i].end = chunks[j - 1].end
 
+
+def split_by_headings(content: str) -> (Chunk, [Chunk]):
+    '''
+    Split content string into Chunk objects by headings. Return a tuple of
+    (header, chunks), where header is a Chunk object for header (content before
+    first heading), and chunks is a list of Chunk objects for other headings.
+
+    :param content: content string to be split into chunks
+
+    :returns: a tuple with two elements:
+        (a header Chunk object,
+         a list of title Chunk objects)
+    '''
+
+    # TODO: this pattern breaks on a commented line in YFM
+
+    header = Chunk(title='',
+                   level=0,
+                   content=get_header_content(content),
+                   start=0,
+                   end=len(content))
+
+    chunks = []
+    for title, level, content, start, end in iter_chunks(content):
+        chunks.append(Chunk(title, level, content, start, end))
+
+    fix_chunk_ends(chunks)
+
     return header, chunks
-
-
-def convert_to_id(title: str, existing_ids: list) -> str:
-    '''
-    (based on convert_to_anchor function from apilinks preprocessor)
-    Convert heading into id. Guaranteed to be unique among `existing_ids`.
-
-    >>> convert_to_id('GET /endpoint/method{id}')
-    'get-endpoint-method-id'
-    '''
-
-    id_ = ''
-    accum = False
-    for char in title:
-        if char == '_' or char.isalpha():
-            if accum:
-                accum = False
-                id_ += f'-{char.lower()}'
-            else:
-                id_ += char.lower()
-        else:
-            accum = True
-    id_ = id_.strip(' -')
-
-    counter = 1
-    result = id_
-    while result in existing_ids:
-        counter += 1
-        result = '-'.join([id_, str(counter)])
-    existing_ids.append(result)
-    return result
 
 
 def get_meta_for_chapter(ch_path: PosixPath, ids: list) -> Chapter:
@@ -151,7 +120,7 @@ def get_meta_for_chapter(ch_path: PosixPath, ids: list) -> Chapter:
     current_section = main_section
     for chunk in chunks:
         section = get_section(chunk)
-        if section:
+        if section:  # look for parent section
             while section.level <= current_section.level:
                 current_section = current_section.parent
             current_section.add_child(section)
@@ -179,5 +148,5 @@ def load_meta(chapters: list, md_root: str or PosixPath = 'src') -> Meta:
         if chapter:
             meta.add_chapter(chapter)
 
-    meta.fillup_missing_info()
+    meta.process_ids()
     return meta

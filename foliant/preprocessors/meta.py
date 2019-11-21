@@ -1,11 +1,12 @@
 '''
+PREPROCESSOR TEMPORARY DISABLED (may be removed in future)
 Preprocessor for Foliant documentation authoring tool.
 Removes section meta-data from the document and adds seeds.
 '''
 from yaml import load, Loader
 
 from foliant.preprocessors.base import BasePreprocessor
-from foliant.meta_commands.generate.generate import YFM_PATTERN
+from foliant.meta_commands.generate.patterns import YFM_PATTERN
 
 
 class Preprocessor(BasePreprocessor):
