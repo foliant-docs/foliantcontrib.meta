@@ -80,7 +80,7 @@ Metadata, specified at the beginning of the document (before the first heading),
 
 If you specify metadata after the heading of some level, it will be applied to all content inside this heading, including all other nested headings. See the illustration below.
 
-![](img/pic1.png)
+![](https://github.com/foliant-docs/foliantcontrib.meta/blob/master/img/pic1.png)
 
 # Special fields
 
