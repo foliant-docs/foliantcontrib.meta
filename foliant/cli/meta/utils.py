@@ -1,4 +1,12 @@
-from foliant.meta_commands.generate.patterns import META_TAG_PATTERN, YFM_PATTERN
+import re
+
+YFM_PATTERN = re.compile(r'^\s*---(?P<yaml>.+?\n)---', re.DOTALL)
+
+META_TAG_PATTERN = re.compile(
+    rf'(?<!\<)\<meta(\s(?P<options>[^\<\>]*))?\>' +
+    rf'(?P<body>.*?)\<\/meta\>',
+    flags=re.DOTALL
+)
 
 
 def convert_to_id(title: str, existing_ids: list) -> str:
