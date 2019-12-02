@@ -1,1 +1,2 @@
-внешний мета-файл чтобы вести список глав, которые загружаются в конфлюенс отдельно
+suggestion: external file to add metadata from single source
+readme: add info on how to run tests

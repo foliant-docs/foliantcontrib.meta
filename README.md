@@ -80,13 +80,13 @@ Metadata, specified at the beginning of the document (before the first heading),
 
 If you specify metadata after the heading of some level, it will be applied to all content inside this heading, including all other nested headings. See the illustration below.
 
-![](https://github.com/foliant-docs/foliantcontrib.meta/blob/master/img/pic1.png)
+![](https://raw.githubusercontent.com/foliant-docs/foliantcontrib.meta/master/img/pic1.png)
 
 # Special fields
 
 Right now there's only one field that is treated specially: the `id` field.
 
-If specified, it will used as identificator of the section. Note that IDs must be unique within the whole project.
+If specified, it will used as identifier of the section. Note that IDs must be unique within the whole project.
 
 If `id` field is omited — the section will get auto generated id based on:
 
