@@ -1,7 +1,6 @@
 '''Module defining Meta class'''
 
 import yaml
-import re
 
 from schema import Schema, Optional
 from pathlib import Path, PosixPath
@@ -92,6 +91,11 @@ class Section:
     @parent.setter
     def parent(self, section):
         self._parent = section
+
+    @property
+    def filename(self):
+        '''link to this section's chapter filename'''
+        return self.chapter.filename
 
     def is_main(self) -> bool:
         '''Determine whether the section is main or not'''

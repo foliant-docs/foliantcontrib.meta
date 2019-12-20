@@ -16,8 +16,8 @@ OPTION_PATTERN = re.compile(
     flags=re.DOTALL
 )
 
-HEADER_PATTERN = re.compile(r'^(?P<content>[\s\S]*?)(?=^#+ .+)',
+HEADER_PATTERN = re.compile(r'^(?P<content>[\s\S]*?)(?=^#{1,6} .+)',
                             flags=re.MULTILINE)
 
-CHUNK_PATTERN = re.compile(r'^(?P<level>#+) (?P<title>.+)\n(?P<content>(?:\n[^#]*)+)',
+CHUNK_PATTERN = re.compile(r'^(?P<level>#{1,6}) (?P<title>.+)\n(?P<content>(^(?!#{1,6} ).*\n?)+)',
                            flags=re.MULTILINE)

@@ -108,6 +108,36 @@ field4:
 '''
         self.assertEqual(get_header_content(source), expected)
 
+    def test_yfm_with_comments(self):
+        source = '''---
+field1: value1
+#field2: 2
+field3:
+#    - li1
+    - li2
+field4:
+    subfield1: subvalue
+    subfield2: true
+---
+
+# First caption
+
+content
+'''
+        expected = '''---
+field1: value1
+#field2: 2
+field3:
+#    - li1
+    - li2
+field4:
+    subfield1: subvalue
+    subfield2: true
+---
+
+'''
+        self.assertEqual(get_header_content(source), expected)
+
     def test_no_header(self):
         source = '# First caption right away\n\Lorem ipsum dolor sit amet.'
 
@@ -123,14 +153,14 @@ class TestIterChunks(TestCase):
     def test_three_chunks(self):
         header = '---\nfield: value\n---\n\n'
         titles = ['title1', 'title2', 'title3']
-        content = '<meta field="value"></meta>\n\nLorem ipsum dolor sit amet.\n\nLorem ipsum dolor sit amet, consectetur adipisicing elit. Maiores, ex.'
+        content = '<meta field="value"></meta>\n\nLorem ipsum #dolor sit amet.\n\n#######Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maiores, ex.'
         source = (f'{header}'  # 22
-                  f'# {titles[0]}\n\n{content}\n\n'  # 162
-                  f'## {titles[1]}\n\n{content}\n\n'  # 303
-                  f'### {titles[2]}\n\n{content}\n\n')  # 445
+                  f'# {titles[0]}\n\n{content}\n\n'  # 170
+                  f'## {titles[1]}\n\n{content}\n\n'  # 319
+                  f'### {titles[2]}\n\n{content}\n\n')  # 469
         levels = [1, 2, 3]
 
-        pos = [22, 162, 303, 445]
+        pos = [22, 170, 319, 469]
         starts = pos[:-1]
         ends = pos[1:]
 

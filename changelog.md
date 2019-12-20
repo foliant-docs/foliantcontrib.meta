@@ -1,3 +1,9 @@
+# 1.2.2
+
+- Don't require empty line between heading and meta tag.
+- Allow comments in YFM.
+- Better patterns for sections detection.
+
 # 1.2.1
 
 - Fix bug with imports.

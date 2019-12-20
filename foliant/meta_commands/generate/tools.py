@@ -93,14 +93,22 @@ def get_header_content(source: str) -> str:
     '''
     Search source for header (content before first heading) and return it.
     If there's no first heading — return the whole source.
-
-    TODO: the pattern breaks on a commented line in YFM
     '''
+    result = ''
+    if source.startswith('---\n'):
+        # cut out YFM manually, otherwise the regex pattern considers
+        # YAML comments as headings
+        end_yfm = source.find('\n---\n', 1)
+        if end_yfm != -1:
+            end_yfm += len('\n---\n')
+            result = source[:end_yfm]
+            source = source[end_yfm]
+
     main_match = HEADER_PATTERN.search(source)
     if main_match:
-        return main_match.group('content')
+        return result + main_match.group('content')
     else:
-        return source
+        return result + source
 
 
 def iter_chunks(source: str):
