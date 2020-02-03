@@ -117,7 +117,7 @@ class Section:
             yield child
             yield from child.iter_children()
 
-    def get_source(self, without_meta=True):
+    def get_source(self, without_meta=True) -> str:
         '''
         Get section source text.
 
@@ -265,6 +265,20 @@ class Meta:
         '''
         for chapter in self.chapters:
             yield from chapter.iter_sections()
+
+    def get_chapter(self, filename: str) -> Chapter:
+        '''Get Chapter by its name'''
+        for chapter in self.chapters:
+            p1 = Path(chapter.filename)
+            p2 = Path(filename)
+            if p1.is_absolute() or p2.is_absolute():
+                if p1.resolve() == p2.resolve():
+                    return chapter
+            else:  # relative
+                if p1 == p2:
+                    return chapter
+        else:
+            raise MetaSectionDoesNotExistError(f"Chapter {filename} does not exist")
 
     def process_ids(self):
         '''

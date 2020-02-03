@@ -96,12 +96,11 @@ def split_by_headings(content: str) -> (Chunk, [Chunk]):
     return header, chunks
 
 
-def get_meta_for_chapter(ch_path: PosixPath, ids: list) -> Chapter:
+def get_meta_for_chapter(ch_path: PosixPath) -> Chapter:
     '''
     Get metadata for one chapter.
 
     :param ch_path: path to chapter source file.
-    :param ids: — list of ids already used in metadata.
 
     :returns: a Chapter object.
     '''
@@ -141,10 +140,9 @@ def load_meta(chapters: list, md_root: str or PosixPath = 'src') -> Meta:
     '''
     c = FlatChapters(chapters=chapters, parent_dir=md_root)
 
-    ids = []
     meta = Meta()
     for path_ in c.paths:
-        chapter = get_meta_for_chapter(path_, ids)
+        chapter = get_meta_for_chapter(path_)
         if chapter:
             meta.add_chapter(chapter)
 

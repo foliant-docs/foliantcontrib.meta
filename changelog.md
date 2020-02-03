@@ -1,3 +1,8 @@
+# 1.2.3
+
+- Add `get_chapter` method to Meta class.
+- Add Developer's guide to readme.
+
 # 1.2.2
 
 - Don't require empty line between heading and meta tag.
