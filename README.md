@@ -105,7 +105,7 @@ You can use the powers of metadata in  your preprocessors, backends and other to
 
 ## Getting metadata
 
-Typical way to work with metadata is to run the `load_meta` function from the `foliant.meta_commands.generate.generate` module.
+Typical way to work with metadata is to run the `load_meta` function from the `foliant.meta.generate` module.
 
 **load_meta(chapters: list, md_root: str or PosixPath = 'src') -> Meta**
 
@@ -114,7 +114,7 @@ This function collects metadata and returns a `Meta` object, which gives access 
 The required parameter is `chapters` — list of chaters loaded from foliant.yml
 
 ```python
->>> from foliant.meta_commands.generate.generate import load_meta
+>>> from foliant.meta.generate import load_meta
 >>> meta = load_meta(['index.md'])
 ```
 
@@ -129,7 +129,7 @@ Meta class holds all metadata and offers few handy methods to work with it.
 This method allows you to load meta into the Meta class instance from previously generated yaml-file. Use it only with empty Meta class:
 
 ```python
->>> from foliant.cli.meta.classes import Meta
+>>> from foliant.meta.classes import Meta
 >>> meta = Meta()
 >>> meta.load_meta_from_file('meta.yml')
 ```
