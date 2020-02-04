@@ -1,6 +1,6 @@
 # 1.3.0
 
-- Restructure modules to aid import errors. Meta-related functions and classes are now available independantly from foliant.meta package.
+- Restructure modules to aid import errors. Meta-related functions and classes are now available independantly from `foliant.meta` package.
 
 # 1.2.3
 
