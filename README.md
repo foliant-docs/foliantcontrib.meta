@@ -1,4 +1,4 @@
-![](https://img.shields.io/pypi/v/foliantcontrib.meta.svg)
+[![](https://img.shields.io/pypi/v/foliantcontrib.meta.svg)](https://pypi.org/project/foliantcontrib.meta/)
 
 # Metadata for Foliant
 
