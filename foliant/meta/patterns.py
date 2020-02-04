@@ -1,4 +1,4 @@
-'''Module holding various re patterns used by generate command'''
+'''Module holding various re patterns used by meta subsystem'''
 
 import re
 

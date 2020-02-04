@@ -5,7 +5,7 @@ import yaml
 from schema import Schema, Optional
 from pathlib import Path, PosixPath
 
-from .utils import convert_to_id, remove_meta
+from .tools import convert_to_id, remove_meta
 
 
 SECTION_SCHEMA = Schema(

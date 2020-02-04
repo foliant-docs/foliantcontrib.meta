@@ -1,8 +1,10 @@
+'''Module defining load_meta function for generating metadata from md-sources'''
+
 from pathlib import PosixPath
 from .tools import (FlatChapters, get_meta_dict_from_yfm,
                     get_meta_dict_from_meta_tag, iter_chunks,
                     get_header_content)
-from foliant.cli.meta.classes import Meta, Chapter, Section
+from .classes import Meta, Chapter, Section
 
 
 class Chunk:

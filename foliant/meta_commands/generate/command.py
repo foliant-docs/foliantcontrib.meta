@@ -4,7 +4,7 @@ import yaml
 
 from foliant.meta_commands.base import BaseMetaCommand
 
-from .generate import load_meta
+from foliant.meta.generate import load_meta
 
 
 class MetaCommand(BaseMetaCommand):
