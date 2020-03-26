@@ -1,3 +1,7 @@
+# 1.3.1
+
+- `remove_meta` now also trims whitespaces in the beginning of the file after removing YFM
+
 # 1.3.0
 
 - Restructure modules to aid import errors. Meta-related functions and classes are now available independantly from `foliant.meta` package.

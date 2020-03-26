@@ -10,9 +10,9 @@ def flatten_seq(seq):
     result = []
     vals = seq.values() if type(seq) == dict else seq
     for i in vals:
-        if type(i) in (dict, list):
+        if isinstance(i, (dict, list)):
             result.extend(flatten_seq(i))
-        else:
+        elif isinstance(i, str):
             result.append(i)
     return result
 
@@ -102,7 +102,7 @@ def get_header_content(source: str) -> str:
         if end_yfm != -1:
             end_yfm += len('\n---\n')
             result = source[:end_yfm]
-            source = source[end_yfm]
+            source = source[end_yfm:]
 
     main_match = HEADER_PATTERN.search(source)
     if main_match:
@@ -167,8 +167,15 @@ def convert_to_id(title: str, existing_ids: list) -> str:
 
 
 def remove_meta(source: str):
-    ''':returns: source string with meta tags removed'''
-    result = YFM_PATTERN.sub('', source)
+    '''
+    Remove meta tags from source string. Whitespaces in the beginning of the
+    file are also trimmed
+
+    :param source: source string where meta tags should be removes.
+
+    :returns: source string with meta tags removed
+    '''
+    result = YFM_PATTERN.sub('', source).lstrip(' \n')
     result = META_TAG_PATTERN.sub('', result)
     return result
 

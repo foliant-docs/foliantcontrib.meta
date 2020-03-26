@@ -1,8 +1,8 @@
 from unittest import TestCase
-from foliant.meta_commands.generate.tools import (get_meta_dict_from_yfm,
-                                                  get_meta_dict_from_meta_tag,
-                                                  get_header_content,
-                                                  iter_chunks)
+from foliant.meta.tools import (get_meta_dict_from_yfm,
+                                get_meta_dict_from_meta_tag,
+                                get_header_content,
+                                iter_chunks)
 
 
 class TestGetMetaDictFromYfm(TestCase):

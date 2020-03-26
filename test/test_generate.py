@@ -1,7 +1,6 @@
 from unittest import TestCase
 from unittest.mock import Mock, patch
-from foliant.meta_commands.generate.generate import (Chunk, fix_chunk_ends,
-                                                     get_section)
+from foliant.meta.generate import (Chunk, fix_chunk_ends, get_section)
 
 
 class TestFixChunkEnds(TestCase):
@@ -54,9 +53,9 @@ class TestGetSection(TestCase):
                           content='',
                           start=0,
                           end=100)
-        with patch('foliant.meta_commands.generate.generate.get_meta_dict_from_yfm',
+        with patch('foliant.meta.generate.get_meta_dict_from_yfm',
                    return_value=data_yfm),\
-                patch('foliant.meta_commands.generate.generate.get_meta_dict_from_meta_tag',
+                patch('foliant.meta.generate.get_meta_dict_from_meta_tag',
                       return_value=data_tag):
             return get_section(chunk)
 

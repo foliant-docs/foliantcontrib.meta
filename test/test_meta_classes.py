@@ -2,8 +2,8 @@ import yaml
 from unittest import TestCase
 from unittest.mock import Mock, patch, mock_open
 
-from foliant.cli.meta.classes import (Section, Chapter, Meta,
-                                      MetaHierarchyError, MetaDublicateIDError)
+from foliant.meta.classes import (Section, Chapter, Meta,
+                                  MetaHierarchyError, MetaDublicateIDError)
 
 ###################
 #     Section     #

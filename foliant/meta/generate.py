@@ -27,45 +27,60 @@ class Chunk:
         return f'<Chunk: [{self.level}] {self.title[:15]}>'
 
 
-def get_section(chunk: Chunk) -> Section or None:
+def load_meta(chapters: list, md_root: str or PosixPath = 'src') -> Meta:
     '''
-    Parse chunk content and create a Section object from its metadata.
-    If no metadata in chunk — return None.
+    Collect metadata from chapters list and load them into Meta class.
+
+    :param chapters: list of chapters from foliant.yml
+    :param md_root: root folder where the md-files are stored. Usually either
+                    <workingdir> or <srcdir>
+
+    :returns: Meta object
     '''
-    yfm_data = None
-    if chunk.level == 0:  # main section
-        # main section must always be present in header (0-level chunk), but it
-        # may be overriden by metadata in <meta> tag, which has higher priority
-        yfm_data = get_meta_dict_from_yfm(chunk.content)
+    c = FlatChapters(chapters=chapters, parent_dir=md_root)
 
-    tag_data = get_meta_dict_from_meta_tag(chunk.content)
+    meta = Meta()
+    for path_ in c.paths:
+        chapter = get_meta_for_chapter(path_)
+        if chapter:
+            meta.add_chapter(chapter)
 
-    data = tag_data if tag_data is not None else yfm_data
-
-    if data is not None:
-        result = Section(chunk.level, chunk.start, chunk.end,
-                         data, title=chunk.title)
-        return result
+    meta.process_ids()
+    return meta
 
 
-def fix_chunk_ends(chunks: list):
+def get_meta_for_chapter(ch_path: PosixPath) -> Chapter:
     '''
-    Fix chunks `end` parameter (in place).
+    Get metadata for one chapter.
 
-    After splitting content into chunks each chunk's end parameter value is
-    the beginning of next heading. We need to fix that to the beginning of
-    the next heading _of the same or higher level_.
+    :param ch_path: path to chapter source file.
 
-    :param chunks: list of Chunk objects to be fixed
+    :returns: a Chapter object.
     '''
+    if not ch_path.exists():
+        return
+    with open(ch_path, encoding='utf8') as f:
+        content = f.read()
 
-    for i in range(len(chunks) - 1):
-        j = i + 1
-        while (chunks[j].level > chunks[i].level):
-            j += 1
-            if j == len(chunks):  # reached the end of the document
-                break
-        chunks[i].end = chunks[j - 1].end
+    chapter = Chapter(filename=str(ch_path),
+                      name=ch_path.stem)
+    header, chunks = split_by_headings(content)
+
+    main_section = get_section(header)
+    chapter.main_section = main_section
+
+    current_section = main_section
+    first_chunk = True
+    for chunk in chunks:
+        section = get_section(chunk)
+        if section:  # look for parent section
+            while section.level <= current_section.level:
+                current_section = current_section.parent
+            current_section.add_child(section)
+            current_section = section
+        first_chunk = False
+
+    return chapter
 
 
 def split_by_headings(content: str) -> (Chunk, [Chunk]):
@@ -98,55 +113,42 @@ def split_by_headings(content: str) -> (Chunk, [Chunk]):
     return header, chunks
 
 
-def get_meta_for_chapter(ch_path: PosixPath) -> Chapter:
+def fix_chunk_ends(chunks: list):
     '''
-    Get metadata for one chapter.
+    Fix chunks `end` parameter (in place).
 
-    :param ch_path: path to chapter source file.
+    After splitting content into chunks each chunk's end parameter value is
+    the beginning of next heading. We need to fix that to the beginning of
+    the next heading _of the same or higher level_.
 
-    :returns: a Chapter object.
+    :param chunks: list of Chunk objects to be fixed
     '''
-    if not ch_path.exists():
-        return
-    with open(ch_path, encoding='utf8') as f:
-        content = f.read()
 
-    chapter = Chapter(filename=str(ch_path),
-                      name=ch_path.stem)
-    header, chunks = split_by_headings(content)
-
-    main_section = get_section(header)
-    chapter.main_section = main_section
-
-    current_section = main_section
-    for chunk in chunks:
-        section = get_section(chunk)
-        if section:  # look for parent section
-            while section.level <= current_section.level:
-                current_section = current_section.parent
-            current_section.add_child(section)
-            current_section = section
-
-    return chapter
+    for i in range(len(chunks) - 1):
+        j = i + 1
+        while (chunks[j].level > chunks[i].level):
+            j += 1
+            if j == len(chunks):  # reached the end of the document
+                break
+        chunks[i].end = chunks[j - 1].end
 
 
-def load_meta(chapters: list, md_root: str or PosixPath = 'src') -> Meta:
+def get_section(chunk: Chunk) -> Section or None:
     '''
-    Collect metadata from chapters list and load them into Meta class.
-
-    :param chapters: list of chapters from foliant.yml
-    :param md_root: root folder where the md-files are stored. Usually either
-                    <workingdir> or <srcdir>
-
-    :returns: Meta object
+    Parse chunk content and create a Section object from its metadata.
+    If no metadata in chunk — return None.
     '''
-    c = FlatChapters(chapters=chapters, parent_dir=md_root)
+    yfm_data = None
+    if chunk.level == 0:  # main section
+        # main section must always be present in header (0-level chunk), but it
+        # may be overriden by metadata in <meta> tag, which has higher priority
+        yfm_data = get_meta_dict_from_yfm(chunk.content)
 
-    meta = Meta()
-    for path_ in c.paths:
-        chapter = get_meta_for_chapter(path_)
-        if chapter:
-            meta.add_chapter(chapter)
+    tag_data = get_meta_dict_from_meta_tag(chunk.content)
 
-    meta.process_ids()
-    return meta
+    data = tag_data if tag_data is not None else yfm_data
+
+    if data is not None:
+        result = Section(chunk.level, chunk.start, chunk.end,
+                         data, title=chunk.title)
+        return result

@@ -1,5 +1,5 @@
 from unittest import TestCase
-from foliant.cli.meta.utils import convert_to_id, remove_meta
+from foliant.meta.tools import convert_to_id, remove_meta
 
 
 class TestConvertToId(TestCase):
@@ -83,9 +83,7 @@ field1: value1
 
 Lorem ipsum dolor sit amet, consectetur adipisicing elit.
 Earum mollitia voluptatum sequi cumque eos eaque!'''
-        expected = '''
-
-# Title
+        expected = '''# Title
 
 Lorem ipsum dolor sit amet, consectetur adipisicing elit.
 Earum mollitia voluptatum sequi cumque eos eaque!'''
