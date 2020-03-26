@@ -67,10 +67,13 @@ def get_meta_for_chapter(ch_path: PosixPath) -> Chapter:
     header, chunks = split_by_headings(content)
 
     main_section = get_section(header)
+    if chunks and not get_section(chunks[0]) and chunks[0].level == 1:
+        # if the first heading is of level 1 (#) and doesn't have meta, set main
+        #  section's title to this heading value
+        main_section.title = chunks[0].title
     chapter.main_section = main_section
 
     current_section = main_section
-    first_chunk = True
     for chunk in chunks:
         section = get_section(chunk)
         if section:  # look for parent section
@@ -78,7 +81,6 @@ def get_meta_for_chapter(ch_path: PosixPath) -> Chapter:
                 current_section = current_section.parent
             current_section.add_child(section)
             current_section = section
-        first_chunk = False
 
     return chapter
 
@@ -95,8 +97,6 @@ def split_by_headings(content: str) -> (Chunk, [Chunk]):
         (a header Chunk object,
          a list of title Chunk objects)
     '''
-
-    # TODO: this pattern breaks on a commented line in YFM
 
     header = Chunk(title='',
                    level=0,

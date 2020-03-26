@@ -50,6 +50,10 @@ class MetaChapterNotAssignedError(Exception):
     pass
 
 
+class MetaChapterDoesNotExistError(Exception):
+    pass
+
+
 class Section:
     def __init__(self,
                  level: int,
@@ -266,19 +270,21 @@ class Meta:
         for chapter in self.chapters:
             yield from chapter.iter_sections()
 
-    def get_chapter(self, filename: str) -> Chapter:
-        '''Get Chapter by its name'''
+    def get_chapter(self, filename: str or PosixPath) -> Chapter:
+        '''
+        Get Chapter by its filename.
+
+        :param filename: path to file, relative to execution dir or absolute.
+
+        :returns: Chapter object for this filename or raises MetaChapterDoesNotExistError.
+        '''
         for chapter in self.chapters:
-            p1 = Path(chapter.filename)
-            p2 = Path(filename)
-            if p1.is_absolute() or p2.is_absolute():
-                if p1.resolve() == p2.resolve():
-                    return chapter
-            else:  # relative
-                if p1 == p2:
-                    return chapter
+            p1 = Path(chapter.filename).resolve()
+            p2 = Path(filename).resolve()
+            if p1 == p2:
+                return chapter
         else:
-            raise MetaSectionDoesNotExistError(f"Chapter {filename} does not exist")
+            raise MetaChapterDoesNotExistError(f"Chapter {filename} does not exist")
 
     def process_ids(self):
         '''

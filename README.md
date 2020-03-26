@@ -138,13 +138,17 @@ This method allows you to load meta into the Meta class instance from previously
 
 This method returns an iterator which yields project's meta-sections (`Section` objects) in the proper order from the first chapter to the last one.
 
-**get_chapter(self, filename: str) -> Chapter**
+**get_chapter(self, filename: str or PosixPath) -> Chapter**
 
-Get chapter (`Chapter` object) by its name. `filename` should be path to chapter relative to the src dir.
+Get chapter (`Chapter` object) by its name. `filename` should be path to chapter relative to the Project dir (or absolute path).
 
 **get_by_id(self, id_: str) -> Section**
 
 Get section (`Section` object) by its id.
+
+**chapters**
+
+A property which holds the list of chapters (`Chapter` objects).
 
 ## The Chapter class
 

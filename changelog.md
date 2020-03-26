@@ -1,6 +1,9 @@
 # 1.3.1
 
 - `remove_meta` now also trims whitespaces in the beginning of the file after removing YFM
+- Main section's title is now set to first heading, if:
+    * the first heading is a 1-level heading (#),
+    * the first heading doesn't have meta.
 
 # 1.3.0
 
