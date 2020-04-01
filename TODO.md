@@ -1,1 +1,1 @@
-suggestion: external file to add metadata from single source
+cut out custom_ids from titles {#id}

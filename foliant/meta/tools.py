@@ -1,4 +1,5 @@
 import yaml
+import re
 
 from pathlib import Path, PosixPath
 from .patterns import (YFM_PATTERN, META_TAG_PATTERN, OPTION_PATTERN,
@@ -94,21 +95,11 @@ def get_header_content(source: str) -> str:
     Search source for header (content before first heading) and return it.
     If there's no first heading — return the whole source.
     '''
-    result = ''
-    if source.startswith('---\n'):
-        # cut out YFM manually, otherwise the regex pattern considers
-        # YAML comments as headings
-        end_yfm = source.find('\n---\n', 1)
-        if end_yfm != -1:
-            end_yfm += len('\n---\n')
-            result = source[:end_yfm]
-            source = source[end_yfm:]
-
     main_match = HEADER_PATTERN.search(source)
     if main_match:
-        return result + main_match.group('content')
+        return main_match.group('content')
     else:
-        return result + source
+        return source
 
 
 def iter_chunks(source: str):
@@ -127,6 +118,12 @@ def iter_chunks(source: str):
 
     TODO: seems that this pattern also is far from perfect
     '''
+    if source.startswith('---\n'):
+        # cut out YFM manually, otherwise the regex pattern considers
+        # YAML comments as headings
+        pattern = re.compile(r'^---[\s\S]+\n---$', re.MULTILINE)
+        source = pattern.sub('', source, 1)
+
     for chunk in CHUNK_PATTERN.finditer(source):
         yield (chunk.group('title'),
                len(chunk.group('level')),

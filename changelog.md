@@ -4,6 +4,7 @@
 - Main section's title is now set to first heading, if:
     * the first heading is a 1-level heading (#),
     * the first heading doesn't have meta.
+- Fix: YFM was not included in meta in some cases
 
 # 1.3.0
 
