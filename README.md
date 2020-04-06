@@ -140,7 +140,7 @@ This method returns an iterator which yields project's meta-sections (`Section` 
 
 **get_chapter(self, filename: str or PosixPath) -> Chapter**
 
-Get chapter (`Chapter` object) by its name. `filename` should be path to chapter relative to the Project dir (or absolute path).
+Get chapter (`Chapter` object) by its path. `filename` should be path to chapter relative to the Project dir (or absolute path).
 
 **get_by_id(self, id_: str) -> Section**
 
