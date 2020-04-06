@@ -2,7 +2,7 @@
 
 # Metadata for Foliant
 
-This extension adds the `meta generate` command to Foliant, which generates the yaml-file with project metadata. It also allows to add other meta commands `meta <command>` which use the generated metadata.
+This extension adds metadata support for Foliant. It also allows to add meta commands which use project's metadata and are called like this: `foliant meta <command>`. Finally, it adds the `meta generate` command to Foliant, which generates the yaml-file with project metadata.
 
 ## Installation
 
@@ -34,32 +34,7 @@ You may also use regular XML-like format with `meta` tag:
 
 > If `meta` tag is present, all Metadata from YAML Front Matter is ignored.
 
-
-## `meta generate` command
-
-### Usage
-
-To generate meta file run the `meta generate` command:
-
-```bash
-$ foliant meta generate
-```
-
-Metadata for the document will appear in the `meta.yml` file.
-
-### Config
-
-Meta generate command has just one option right now. It is specified under `meta` section in config:
-
-```yaml
-meta:
-    filename: meta.yml
-```
-
-`filename`
-:   name of the YAML-file with generated project metadata.
-
-# User's guide
+## User's guide
 
 Metadata allows you to specific properties to your documents, which won't be visible directly to the end-user. These properties may be:
 
@@ -70,7 +45,7 @@ Metadata allows you to specific properties to your documents, which won't be vis
 
 This module is required for metadata to work in your projects. But it doesn't care about most of the fields and their values. The only exception being the `id` field. See **Special fields** section.
 
-## Sections
+### Sections
 
 You can specify metadata for a whole chapter and for it's portions, which are called *sections*. Section is a fragment of the document from one heading to another one of the same level of higher.
 
@@ -82,7 +57,7 @@ If you specify metadata after the heading of some level, it will be applied to a
 
 ![](https://raw.githubusercontent.com/foliant-docs/foliantcontrib.meta/master/img/pic1.png)
 
-## Special fields
+### Special fields
 
 Right now there's only one field that is treated specially: the `id` field.
 
@@ -93,17 +68,17 @@ If `id` field is omitted — the section will get auto generated id based on:
 - chapter filename for main section,
 - title for general sections.
 
-## Additional info
+### Additional info
 
 Metadata works only for files, mentioned in the `chapters` section in foliant.yml. All other files in `src` dir are ignored.
 
 When using [includes](https://foliant-docs.github.io/docs/preprocessors/includes/), all metadata from the included content is removed.
 
-# Developer's guide
+## Developer's guide
 
 You can use the powers of metadata in  your preprocessors, backends and other tools. You can define fields with special meaning for your tools and process sections based on these fields.
 
-## Getting metadata
+### Getting metadata
 
 Typical way to work with metadata is to run the `load_meta` function from the `foliant.meta.generate` module.
 
@@ -120,7 +95,7 @@ The required parameter is `chapters` — list of chaters loaded from foliant.yml
 
 You can also specify the `md_root` parameter. If your tool is a CLI extension, `md_root` should point to the project's `src` dir. But if you are building a preprocessor or a backend, you would probably want to point it to the `__folianttmp__` dir with the current state of the sources.
 
-## The Meta class
+### The Meta class
 
 Meta class holds all metadata and offers few handy methods to work with it.
 
@@ -150,7 +125,7 @@ Get section (`Section` object) by its id.
 
 A property which holds the list of chapters (`Chapter` objects).
 
-## The Chapter class
+### The Chapter class
 
 `Chapter` class represents a project's chapter. It has several important methods which may be useful for working with metadata.
 
@@ -176,7 +151,7 @@ Chapter's name.
 
 Chapter's filename.
 
-## The Section class
+### The Section class
 
 `Section` represents a meta section.
 
@@ -226,3 +201,29 @@ Section's offsets from the beginning of the chapter.
 **filename**
 
 Holds reference to section's chapter's filename for easy access.
+
+# `meta generate` command
+
+`meta generate` command collects metadata from the Foliant project and saves it into a YAML-file.
+
+## Usage
+
+To generate meta file run the `meta generate` command:
+
+```bash
+$ foliant meta generate
+```
+
+Metadata for the document will appear in the `meta.yml` file.
+
+## Config
+
+Meta generate command has just one option right now. It is specified under `meta` section in config:
+
+```yaml
+meta:
+    filename: meta.yml
+```
+
+`filename`
+:   name of the YAML-file with generated project metadata.
