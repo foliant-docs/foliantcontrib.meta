@@ -59,7 +59,6 @@ class Meta:
     syntax_version = '1.0'
 
     def __init__(self):
-        # self.data = []
         self.chapters = []
         self.filename = None
 
@@ -110,7 +109,6 @@ class Meta:
         :param chapter: a Chapter object to be added
         '''
         self.chapters.append(chapter)
-        # self.data.append(chapter.to_dict())
 
     def iter_sections(self):
         '''
