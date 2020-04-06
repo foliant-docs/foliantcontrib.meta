@@ -6,38 +6,36 @@ from foliant.meta.classes import Section, MetaHierarchyError
 
 class TestAddChild(TestCase):
     def test_add_child_with_lower_level(self):
-        chapter = Mock()
         parent = Section(level=1,
                          start=0,
                          end=100,
                          data={},
-                         title="Parent Title",
-                         chapter=chapter)
+                         title="Parent Title")
+        chapter = Mock()
+        parent.chapter = chapter
         child = Section(level=3,
                         start=10,
                         end=90,
                         data={},
-                        title="Child Title",
-                        chapter=None)
+                        title="Child Title")
         parent.add_child(child)
         self.assertIn(child, parent.children)
         self.assertIs(parent.chapter, child.chapter)
         self.assertIs(child.parent, parent)
 
     def test_add_child_with_higher_level(self):
-        chapter = Mock()
         parent = Section(level=2,
                          start=0,
                          end=100,
                          data={},
-                         title="Parent Title",
-                         chapter=chapter)
+                         title="Parent Title")
+        chapter = Mock()
+        parent.chapter = chapter
         child = Section(level=1,
                         start=110,
                         end=190,
                         data={},
-                        title="Child Title",
-                        chapter=None)
+                        title="Child Title")
         with self.assertRaises(MetaHierarchyError):
             parent.add_child(child)
         self.assertNotIn(child, parent.children)
@@ -47,29 +45,24 @@ class TestAddChild(TestCase):
 
 class TestIsMain(TestCase):
     def test_should_be_main(self):
-        chapter = Mock()
         section = Section(level=0,
                           start=0,
                           end=100,
                           data={},
-                          title="Main Title",
-                          chapter=chapter)
+                          title="Main Title")
         self.assertTrue(section.is_main)
 
     def test_should_not_be_main(self):
-        chapter = Mock()
         section1 = Section(level=1,
                            start=0,
                            end=100,
                            data={},
-                           title="Main Title",
-                           chapter=chapter)
+                           title="Main Title")
         section2 = Section(level=0,
                            start=0,
                            end=100,
                            data={},
-                           title="Main Title",
-                           chapter=chapter)
+                           title="Main Title")
         section2.parent = section1
 
         self.assertFalse(section1.is_main())
@@ -81,13 +74,11 @@ class TestToDict(TestCase):
     maxDiff = None
 
     def test_single(self):
-        chapter = Mock()
         section = Section(level=0,
                           start=0,
                           end=100,
                           data={'field': 'value'},
-                          title="Main Title",
-                          chapter=chapter)
+                          title="Main Title")
         section.id = '1'
         expected = {
             'id': '1',
@@ -101,25 +92,21 @@ class TestToDict(TestCase):
         self.assertEqual(section.to_dict(), expected)
 
     def test_with_children(self):
-        chapter = Mock()
         parent = Section(level=0,
                          start=0,
                          end=200,
                          data={'field1': 'val1'},
-                         title="Parent Title",
-                         chapter=chapter)
+                         title="Parent Title")
         child1 = Section(level=1,
                          start=110,
                          end=190,
                          data={'field2': 'val2'},
-                         title="Child Title 1",
-                         chapter=None)
+                         title="Child Title 1")
         child2 = Section(level=2,
                          start=150,
                          end=190,
                          data={'field3': 'val3'},
-                         title="Child Title 2",
-                         chapter=None)
+                         title="Child Title 2")
         parent.id = '1'
         child1.id = '2'
         child2.id = '3'
@@ -161,55 +148,46 @@ class TestToDict(TestCase):
 class TestIterChildren(TestCase):
 
     def test_no_children(self):
-        chapter = Mock()
         parent = Section(level=0,
                          start=0,
                          end=200,
                          data={'field1': 'val1'},
-                         title="Parent Title",
-                         chapter=chapter)
+                         title="Parent Title")
         i = parent.iter_children()
         with self.assertRaises(StopIteration):
             next(i)
 
     def test_with_children(self):
-        chapter = Mock()
         parent = Section(level=0,
                          start=0,
                          end=200,
                          data={'field1': 'val1'},
-                         title="Parent Title",
-                         chapter=chapter)
+                         title="Parent Title")
         child1 = Section(level=1,
                          start=110,
                          end=140,
                          data={'field2': 'val2'},
-                         title="Child Title 1",
-                         chapter=None)
+                         title="Child Title 1")
         child11 = Section(level=2,
                           start=120,
                           end=130,
                           data={'field2': 'val2'},
-                          title="Child Title 11",
-                          chapter=None)
+                          title="Child Title 11")
         child12 = Section(level=2,
                           start=130,
                           end=140,
                           data={'field2': 'val2'},
-                          title="Child Title 12",
-                          chapter=None)
+                          title="Child Title 12")
         child2 = Section(level=1,
                          start=140,
                          end=150,
                          data={'field2': 'val2'},
-                         title="Child Title 2",
-                         chapter=None)
+                         title="Child Title 2")
         child3 = Section(level=1,
                          start=150,
                          end=160,
                          data={'field2': 'val2'},
-                         title="Child Title 3",
-                         chapter=None)
+                         title="Child Title 3")
         parent.add_child(child1)
         parent.add_child(child2)
         parent.add_child(child3)

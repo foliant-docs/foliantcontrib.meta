@@ -70,14 +70,12 @@ class Meta:
 
         :param filename: the name of the yaml-file with metadata.
         '''
-        def load_section(section_dict: dict,
-                         chapter: Chapter) -> Section:
+        def load_section(section_dict: dict) -> Section:
             '''
             Create a section from the dictionary with its data, recursively
             creating all the child sections and connecting them together.
 
             :param section_dict: dictionary with section data, loaded from meta yaml
-            :param chapter: Chapter object into which the section must be included
 
             :returns: a constructed Section object
             '''
@@ -86,10 +84,9 @@ class Meta:
                               start=data['start'],
                               end=data['end'],
                               data=data['data'],
-                              title=data['title'],
-                              chapter=chapter)
+                              title=data['title'])
             for child in data['children']:
-                section.add_child(load_section(child, chapter))
+                section.add_child(load_section(child))
             return section
 
         self.filename = Path(filename)
@@ -101,8 +98,7 @@ class Meta:
         for chapter_dict in self.data['chapters']:
             chapter = Chapter(filename=chapter_dict['filename'],
                               name=chapter_dict['name'])
-            chapter.main_section = load_section(section_dict=chapter_dict['section'],
-                                                chapter=chapter)
+            chapter.main_section = load_section(section_dict=chapter_dict['section'])
             self.chapters.append(chapter)
 
         self.process_ids()
@@ -264,6 +260,7 @@ class Section:
         self.children = []
         self._parent = None
         self.id = None
+        self.chapter = None
         self.data = data
 
     def add_child(self, section):
