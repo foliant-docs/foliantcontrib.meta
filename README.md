@@ -202,7 +202,7 @@ Section's offsets from the beginning of the chapter.
 
 Holds reference to section's chapter's filename for easy access.
 
-# `meta generate` command
+# Meta Generate command
 
 `meta generate` command collects metadata from the Foliant project and saves it into a YAML-file.
 
