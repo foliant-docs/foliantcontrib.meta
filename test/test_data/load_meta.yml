@@ -1,0 +1,79 @@
+version: '1.0'
+chapters:
+- filename: test/test_data/load_meta/chapter_only_yfm.md
+  name: chapter_only_yfm.md
+  section:
+    children: []
+    data:
+      field1: value1
+      field2: true
+    end: 53
+    id: chapter_only_yfm-md
+    level: 0
+    start: 0
+    title: chapter_only_yfm.md
+- filename: test/test_data/load_meta/chapter_with_meta.md
+  name: chapter_with_meta.md
+  section:
+    children:
+    - children:
+      - children: []
+        data:
+          field1:
+            key1: val1
+            key2: val2
+          field2:
+          - li1
+          - li2
+          - li3
+        end: 1460
+        id: fourth-heading
+        level: 3
+        start: 873
+        title: Fourth heading
+      data:
+        field1: val1
+      end: 1460
+      id: second-heading
+      level: 1
+      start: 321
+      title: Second heading
+    data:
+      field1: value1
+      field2:
+      - li1
+      - li2
+      field3: true
+    end: 1692
+    id: first-heading
+    level: 0
+    start: 0
+    title: First heading
+- filename: test/test_data/load_meta/chapter_with_one_meta_tag.md
+  name: chapter_with_one_meta_tag.md
+  section:
+    children:
+    - children: []
+      data:
+        field: val
+      end: 1181
+      id: second-heading-2
+      level: 2
+      start: 470
+      title: Second heading
+    data: {}
+    end: 1181
+    id: first-heading-2
+    level: 0
+    start: 0
+    title: First heading
+- filename: test/test_data/load_meta/chapter_without_meta.md
+  name: chapter_without_meta.md
+  section:
+    children: []
+    data: {}
+    end: 2391
+    id: heading
+    level: 0
+    start: 0
+    title: Heading

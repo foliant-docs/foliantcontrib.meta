@@ -59,7 +59,7 @@ class Meta:
     syntax_version = '1.0'
 
     def __init__(self):
-        self.data = []
+        # self.data = []
         self.chapters = []
         self.filename = None
 
@@ -93,9 +93,9 @@ class Meta:
 
         with open(filename) as f:
             unchecked_data = yaml.load(f, yaml.Loader)
-        self.data = META_SCHEMA.validate(unchecked_data)
+        data = META_SCHEMA.validate(unchecked_data)
 
-        for chapter_dict in self.data['chapters']:
+        for chapter_dict in data['chapters']:
             chapter = Chapter(filename=chapter_dict['filename'],
                               name=chapter_dict['name'])
             chapter.main_section = load_section(section_dict=chapter_dict['section'])
@@ -110,7 +110,7 @@ class Meta:
         :param chapter: a Chapter object to be added
         '''
         self.chapters.append(chapter)
-        self.data.append(chapter.to_dict())
+        # self.data.append(chapter.to_dict())
 
     def iter_sections(self):
         '''

@@ -1,0 +1,1145 @@
+version: '1.0'
+chapters:
+- name: authorization/common.md
+  filename: src/authorization/common.md
+  section:
+    id: регистрация-устройства-и-получение-неавторизованной-сессии
+    title: Регистрация устройства и получение неавторизованной сессии
+    level: 0
+    data:
+      structure:
+        topic: auth
+        entity: user_story
+      draw: true
+      importance: Высокая
+      relates:
+      - валидация-логина-и-пароля
+    start: 0
+    end: 7497
+    children: []
+- name: authorization/phone-email-auth.md
+  filename: src/authorization/phone-email-auth.md
+  section:
+    id: авторизация-и-регистрация-пользователя-по-почте-или-телефону
+    title: Авторизация и регистрация пользователя по почте или телефону
+    level: 0
+    data:
+      structure:
+        topic: auth
+        entity: user_story
+      draw: true
+      importance: Высокая
+    start: 0
+    end: 11683
+    children:
+    - id: задача-проверка-логина-пользователя
+      title: 'Задача: Проверка логина пользователя'
+      level: 2
+      data:
+        functionality: true
+      start: 1056
+      end: 2681
+      children: []
+    - id: задача-регистрация-пользователя-по-адресу-электронной-почты
+      title: 'Задача: Регистрация пользователя по адресу электронной почты'
+      level: 2
+      data:
+        functionality: true
+        test_case_ids:
+        - 31133
+        - 31134
+        - 31135
+        - 31136
+        - 31137
+        - 54374
+      start: 2681
+      end: 3321
+      children: []
+    - id: задача-регистрация-пользователя-по-номеру-телефона
+      title: 'Задача: Регистрация пользователя по номеру телефона'
+      level: 2
+      data:
+        functionality: true
+        test_case_ids:
+        - 31122
+        - 31123
+        - 31124
+        - 31125
+        - 31126
+        - 31127
+      start: 3321
+      end: 4399
+      children: []
+    - id: задача-неверный-код-валидации
+      title: 'Задача: Неверный код валидации'
+      level: 2
+      data:
+        functionality: true
+      start: 4399
+      end: 4816
+      children: []
+    - id: задача-аутентификация-пользователя-по-адресу-электронной-почты
+      title: 'Задача: Аутентификация пользователя по адресу электронной почты'
+      level: 2
+      data:
+        functionality: true
+        test_case_ids:
+        - 31113
+        - 31508
+        - 31114
+        - 31115
+        - 31116
+        - 31117
+        - 31118
+        - 34882
+      start: 4816
+      end: 5389
+      children: []
+    - id: задача-завершение-аутентификация-пользователя-по-адресу-электронной-почты
+      title: 'Задача: Завершение аутентификация пользователя по адресу электронной
+        почты'
+      level: 2
+      data:
+        functionality: true
+      start: 5389
+      end: 6330
+      children: []
+    - id: задача-превышение-лимита-устройств
+      title: 'Задача: Превышение лимита устройств'
+      level: 2
+      data:
+        functionality: true
+      start: 6330
+      end: 7501
+      children: []
+    - id: задача-аутентификация-пользователя-по-номеру-телефона
+      title: 'Задача: Аутентификация пользователя по номеру телефона'
+      level: 2
+      data:
+        functionality: true
+        test_case_ids:
+        - 31172
+        - 31509
+        - 31173
+        - 31174
+        - 31175
+        - 31176
+        - 31177
+      start: 7501
+      end: 8173
+      children: []
+    - id: задача-завершение-аутентификация-пользователя-по-номеру-телефона
+      title: 'Задача: Завершение аутентификация пользователя по номеру телефона'
+      level: 2
+      data:
+        functionality: true
+      start: 8173
+      end: 9068
+      children: []
+    - id: задача-авторизация-по-почте-недоступна-если-добавлен-номер-телефона
+      title: 'Задача: Авторизация по почте недоступна, если добавлен номер телефона'
+      level: 2
+      data:
+        functionality: true
+      start: 9068
+      end: 9565
+      children: []
+    - id: задача-авторизация-под-новым-логином-на-ott-устройстве
+      title: 'Задача: Авторизация под новым логином на OTT-устройстве'
+      level: 2
+      data:
+        functionality: true
+      start: 9565
+      end: 10280
+      children: []
+    - id: задача-сброс-пароля
+      title: 'Задача: Сброс пароля'
+      level: 2
+      data:
+        functionality: true
+      start: 10280
+      end: 10777
+      children: []
+    - id: задача-автоматическая-авторизация-после-сброса-пароля
+      title: 'Задача: Автоматическая авторизация после сброса пароля'
+      level: 2
+      data:
+        functionality: true
+      start: 10777
+      end: 11248
+      children: []
+    - id: задача-перебалансировка-при-выходе-из-аккаунта
+      title: 'Задача: Перебалансировка при выходе из аккаунта'
+      level: 2
+      data:
+        functionality: true
+      start: 11248
+      end: 11683
+      children: []
+- name: authorization/stb.md
+  filename: src/authorization/stb.md
+  section:
+    id: авторизация-пользователя-на-приставке
+    title: Авторизация пользователя на приставке
+    level: 0
+    data:
+      structure:
+        topic: auth
+        entity: user_story
+      draw: true
+    start: 0
+    end: 11790
+    children:
+    - id: задача-ввод-номера-активации
+      title: 'Задача: Ввод номера активации'
+      level: 2
+      data:
+        functionality: true
+      start: 365
+      end: 1256
+      children: []
+    - id: задача-регистрация-и-аутентификация-пользователя-по-номеру-и-коду-активации
+      title: 'Задача: Регистрация и аутентификация пользователя по номеру и коду активации'
+      level: 2
+      data:
+        functionality: true
+        test_case_ids:
+        - 54102
+      start: 1256
+      end: 2100
+      children: []
+    - id: задача-аутентификация-пользователя-по-номеру-и-коду-активации
+      title: 'Задача: Аутентификация пользователя по номеру и коду активации'
+      level: 2
+      data:
+        functionality: true
+        test_case_ids:
+        - 31051
+        - 31052
+        - 31053
+        - 31054
+        - 31055
+        - 31768
+        - 60211
+      start: 2100
+      end: 2886
+      children: []
+    - id: задача-неверный-код-активации
+      title: 'Задача: Неверный код активации'
+      level: 2
+      data:
+        functionality: true
+      start: 2886
+      end: 3359
+      children: []
+    - id: задача-номер-и-код-активации-использованы-на-другом-устройстве
+      title: 'Задача: Номер и код активации использованы на другом устройстве'
+      level: 2
+      data:
+        functionality: true
+      start: 3359
+      end: 4039
+      children: []
+    - id: задача-авторизация-по-почте-или-телефону-недоступна-если-был-использован-номер-активации
+      title: 'Задача: Авторизация по почте или телефону недоступна, если был использован
+        номер активации'
+      level: 2
+      data:
+        functionality: true
+      start: 4039
+      end: 4765
+      children: []
+    - id: задача-предложение-добавить-в-аккаунт-телефон-или-почту-после-успешной-авторизации
+      title: 'Задача: Предложение добавить в аккаунт телефон или почту после успешной
+        авторизации'
+      level: 2
+      data:
+        functionality: true
+      start: 4765
+      end: 5802
+      children: []
+    - id: задача-показ-баннера-активации-мультискрина-в-разделе-мое
+      title: 'Задача: Показ баннера «Активации мультискрина» в разделе «Мое»'
+      level: 2
+      data:
+        functionality: true
+      start: 5802
+      end: 6720
+      children: []
+    - id: задача-добавление-постоянного-логина-почта
+      title: 'Задача: Добавление постоянного логина — почта'
+      level: 2
+      data:
+        functionality: true
+      start: 6720
+      end: 8096
+      children: []
+    - id: задача-добавление-постоянного-логина-номер-телефона
+      title: 'Задача: Добавление постоянного логина — номер телефона'
+      level: 2
+      data:
+        functionality: true
+      start: 8096
+      end: 9134
+      children: []
+    - id: задача-объединение-аккаунтов
+      title: 'Задача: Объединение аккаунтов'
+      level: 2
+      data:
+        functionality: true
+      start: 9134
+      end: 10712
+      children: []
+    - id: задача-повторная-авторизация-на-приставке
+      title: 'Задача: Повторная авторизация на приставке'
+      level: 2
+      data:
+        functionality: true
+      start: 10712
+      end: 11790
+      children: []
+- name: authorization/suggestions-authorization.md
+  filename: src/authorization/suggestions-authorization.md
+  section:
+    id: подсказки-при-авторизации
+    title: Подсказки при авторизации
+    level: 0
+    data:
+      structure:
+        topic: auth
+        entity: user_story
+      draw: true
+    start: 0
+    end: 853
+    children: []
+- name: authorization/credentials-validation.md
+  filename: src/authorization/credentials-validation.md
+  section:
+    id: валидация-логина-и-пароля
+    title: Валидация логина и пароля
+    level: 0
+    data:
+      structure:
+        topic: auth
+        entity: user_story
+      draw: true
+    start: 0
+    end: 1382
+    children: []
+- name: authorization/promovideo.md
+  filename: src/authorization/promovideo.md
+  section:
+    id: воспроизведение-проморолика-при-первом-запуске-приставки
+    title: Воспроизведение проморолика при первом запуске приставки
+    level: 0
+    data:
+      structure:
+        topic: auth
+        entity: user_story
+      draw: true
+    start: 0
+    end: 2662
+    children: []
+- name: authorization/test_coverage.md
+  filename: src/authorization/test_coverage.md
+  section:
+    id: покрытие-тестами
+    title: Покрытие тестами
+    level: 0
+    data:
+      structure:
+        topic: auth
+      draw: true
+    start: 0
+    end: 409
+    children: []
+- name: pin/pin.md
+  filename: src/pin/pin.md
+  section:
+    id: пин-коды
+    title: ПИН-коды
+    level: 0
+    data: {}
+    start: 0
+    end: 3658
+    children: []
+- name: pin/pin-entry.md
+  filename: src/pin/pin-entry.md
+  section:
+    id: валидация-пин-кода
+    title: Валидация ПИН-кода
+    level: 0
+    data: {}
+    start: 0
+    end: 1539
+    children: []
+- name: pin/pin-edit.md
+  filename: src/pin/pin-edit.md
+  section:
+    id: изменение-пин-кода
+    title: Изменение ПИН-кода
+    level: 0
+    data: {}
+    start: 0
+    end: 1591
+    children: []
+- name: pin/pin-reset.md
+  filename: src/pin/pin-reset.md
+  section:
+    id: сброс-пин-кода
+    title: Сброс ПИН-кода
+    level: 0
+    data: {}
+    start: 0
+    end: 3434
+    children: []
+- name: pin/pin-serials.md
+  filename: src/pin/pin-serials.md
+  section:
+    id: запрос-пин-кода-при-просмотре-сериала
+    title: Запрос ПИН-кода при просмотре сериала
+    level: 0
+    data: {}
+    start: 0
+    end: 1279
+    children: []
+- name: purchases/purchases.md
+  filename: src/purchases/purchases.md
+  section:
+    id: покупки-и-подписки
+    title: Покупки и подписки
+    level: 0
+    data: {}
+    start: 0
+    end: 1357
+    children: []
+- name: purchases/purchase-options.md
+  filename: src/purchases/purchase-options.md
+  section:
+    id: варианты-покупки-группировка-и-ключевые-особенности
+    title: Варианты покупки – группировка и ключевые особенности
+    level: 0
+    data: {}
+    start: 0
+    end: 2383
+    children: []
+- name: purchases/subscribe-variants.md
+  filename: src/purchases/subscribe-variants.md
+  section:
+    id: варианты-подключения-услуги
+    title: Варианты подключения услуги
+    level: 0
+    data: {}
+    start: 0
+    end: 2672
+    children: []
+- name: purchases/purchase-methods.md
+  filename: src/purchases/purchase-methods.md
+  section:
+    id: выбор-способа-оплаты
+    title: Выбор способа оплаты
+    level: 0
+    data: {}
+    start: 0
+    end: 5740
+    children: []
+- name: purchases/complex-services.md
+  filename: src/purchases/complex-services.md
+  section:
+    id: комплексные-услуги
+    title: Комплексные услуги
+    level: 0
+    data: {}
+    start: 0
+    end: 5771
+    children: []
+- name: purchases/service-media-views.md
+  filename: src/purchases/service-media-views.md
+  section:
+    id: витрины-услуг
+    title: Витрины услуг
+    level: 0
+    data: {}
+    start: 0
+    end: 3117
+    children: []
+- name: purchases/trial.md
+  filename: src/purchases/trial.md
+  section:
+    id: пробный-период-для-услуг
+    title: Пробный период для услуг
+    level: 0
+    data: {}
+    start: 0
+    end: 4984
+    children: []
+- name: purchases/purchase-validation.md
+  filename: src/purchases/purchase-validation.md
+  section:
+    id: проверка-валидности-покупки
+    title: Проверка валидности покупки
+    level: 0
+    data: {}
+    start: 0
+    end: 2610
+    children: []
+- name: purchases/in-app-confirm-ios.md
+  filename: src/purchases/in-app-confirm-ios.md
+  section:
+    id: обработка-неподтвержденных-платежей-для-apple
+    title: Обработка неподтвержденных платежей для Apple
+    level: 0
+    data: {}
+    start: 0
+    end: 1367
+    children: []
+- name: purchases/payment-details.md
+  filename: src/purchases/payment-details.md
+  section:
+    id: история-платежей
+    title: История платежей
+    level: 0
+    data: {}
+    start: 0
+    end: 8404
+    children: []
+- name: purchases/card-handling.md
+  filename: src/purchases/card-handling.md
+  section:
+    id: привязка-и-удаление-банковской-карты
+    title: Привязка и удаление банковской карты
+    level: 0
+    data: {}
+    start: 0
+    end: 7232
+    children: []
+- name: payments/purchase-vod-by-card.md
+  filename: src/payments/purchase-vod-by-card.md
+  section:
+    id: покупка-vod-контента-c-банковской-карты
+    title: Покупка VOD-контента c банковской карты
+    level: 0
+    data: {}
+    start: 0
+    end: 2936
+    children: []
+- name: payments/subscribes.md
+  filename: src/payments/subscribes.md
+  section:
+    id: управление-услугами-для-пользователей-без-лицевых-счетов
+    title: Управление услугами для пользователей без лицевых счетов
+    level: 0
+    data: {}
+    start: 0
+    end: 3452
+    children: []
+- name: payments/purchase-vod-oss.md
+  filename: src/payments/purchase-vod-oss.md
+  section:
+    id: покупка-vod-контента-c-лицевого-счёта
+    title: Покупка VOD-контента c лицевого счёта
+    level: 0
+    data: {}
+    start: 0
+    end: 3107
+    children: []
+- name: payments/subscribes-iptv.md
+  filename: src/payments/subscribes-iptv.md
+  section:
+    id: управление-услугами-для-пользователей-с-лицевым-счетом
+    title: Управление услугами для пользователей с лицевым счетом
+    level: 0
+    data: {}
+    start: 0
+    end: 8335
+    children: []
+- name: payments/account-refill.md
+  filename: src/payments/account-refill.md
+  section:
+    id: пополнение-лицевого-счёта
+    title: Пополнение лицевого счёта
+    level: 0
+    data: {}
+    start: 0
+    end: 6111
+    children: []
+- name: payments/purchase-in-app.md
+  filename: src/payments/purchase-in-app.md
+  section:
+    id: покупка-контента-или-подписка-in-app-из-карточки-контента
+    title: Покупка контента или подписка In-App из карточки контента
+    level: 0
+    data: {}
+    start: 0
+    end: 5152
+    children: []
+- name: payments/bonus.md
+  filename: src/payments/bonus.md
+  section:
+    id: покупки-за-бонусы
+    title: Покупки за бонусы
+    level: 0
+    data: {}
+    start: 0
+    end: 2931
+    children: []
+- name: media_items/content_card.md
+  filename: src/media_items/content_card.md
+  section:
+    id: улучшение-покупки-из-карточки-контента
+    title: Улучшение покупки из карточки контента
+    level: 0
+    data: {}
+    start: 0
+    end: 2698
+    children: []
+- name: account-settings/account-settings.md
+  filename: src/account-settings/account-settings.md
+  section:
+    id: настройки-аккаунта
+    title: Настройки аккаунта
+    level: 0
+    data: {}
+    start: 0
+    end: 1997
+    children: []
+- name: account-settings/add-email.md
+  filename: src/account-settings/add-email.md
+  section:
+    id: привязка-адреса-электронной-почты-add-email
+    title: Привязка адреса электронной почты {#add-email}
+    level: 0
+    data: {}
+    start: 0
+    end: 5150
+    children: []
+- name: account-settings/add-phone-number.md
+  filename: src/account-settings/add-phone-number.md
+  section:
+    id: привязка-номера-телефона-add-phone
+    title: Привязка номера телефона {#add-phone}
+    level: 0
+    data: {}
+    start: 0
+    end: 4996
+    children: []
+- name: account-settings/change-password.md
+  filename: src/account-settings/change-password.md
+  section:
+    id: смена-пароля
+    title: Смена пароля
+    level: 0
+    data: {}
+    start: 0
+    end: 2663
+    children: []
+- name: account-settings/password-reset.md
+  filename: src/account-settings/password-reset.md
+  section:
+    id: сброс-пароля
+    title: Сброс пароля
+    level: 0
+    data: {}
+    start: 0
+    end: 2647
+    children: []
+- name: account-settings/change-phone-number.md
+  filename: src/account-settings/change-phone-number.md
+  section:
+    id: изменение-номера-телефона
+    title: Изменение номера телефона
+    level: 0
+    data: {}
+    start: 0
+    end: 4997
+    children: []
+- name: account-settings/change-email.md
+  filename: src/account-settings/change-email.md
+  section:
+    id: изменение-адреса-электронной-почты
+    title: Изменение адреса электронной почты
+    level: 0
+    data: {}
+    start: 0
+    end: 7389
+    children: []
+- name: account-settings/delete-phone-number.md
+  filename: src/account-settings/delete-phone-number.md
+  section:
+    id: удаление-номера-телефона
+    title: Удаление номера телефона
+    level: 0
+    data: {}
+    start: 0
+    end: 4330
+    children: []
+- name: account-settings/delete-email.md
+  filename: src/account-settings/delete-email.md
+  section:
+    id: удаление-адреса-электронной-почты-delete-email
+    title: Удаление адреса электронной почты {#delete-email}
+    level: 0
+    data: {}
+    start: 0
+    end: 2932
+    children: []
+- name: account-settings/read-terms.md
+  filename: src/account-settings/read-terms.md
+  section:
+    id: показ-оферты
+    title: Показ оферты
+    level: 0
+    data: {}
+    start: 0
+    end: 618
+    children: []
+- name: account-settings/logout.md
+  filename: src/account-settings/logout.md
+  section:
+    id: выход-из-учётной-записи
+    title: Выход из учётной записи
+    level: 0
+    data: {}
+    start: 0
+    end: 2785
+    children: []
+- name: profiles/profiles.md
+  filename: src/profiles/profiles.md
+  section:
+    id: настройки-профилей
+    title: Настройки профилей
+    level: 0
+    data: {}
+    start: 0
+    end: 1081
+    children: []
+- name: profiles/create-profile.md
+  filename: src/profiles/create-profile.md
+  section:
+    id: создание-профиля
+    title: Создание профиля
+    level: 0
+    data: {}
+    start: 0
+    end: 1570
+    children: []
+- name: profiles/modify-profile.md
+  filename: src/profiles/modify-profile.md
+  section:
+    id: редактирование-профиля
+    title: Редактирование профиля
+    level: 0
+    data: {}
+    start: 0
+    end: 2856
+    children: []
+- name: profiles/age-limit.md
+  filename: src/profiles/age-limit.md
+  section:
+    id: возрастное-ограничение-и-уровень-отображения-контента-age-limit
+    title: Возрастное ограничение и уровень отображения контента {#age-limit}
+    level: 0
+    data: {}
+    start: 0
+    end: 4214
+    children: []
+- name: profiles/purchase-limit.md
+  filename: src/profiles/purchase-limit.md
+  section:
+    id: ограничение-покупок
+    title: Ограничение покупок
+    level: 0
+    data: {}
+    start: 0
+    end: 1439
+    children: []
+- name: profiles/view-limits.md
+  filename: src/profiles/view-limits.md
+  section:
+    id: ограничение-времени-просмотра
+    title: Ограничение времени просмотра
+    level: 0
+    data: {}
+    start: 0
+    end: 5694
+    children: []
+- name: profiles/channel-filter.md
+  filename: src/profiles/channel-filter.md
+  section:
+    id: доступ-к-тв-каналам
+    title: Доступ к ТВ-каналам
+    level: 0
+    data: {}
+    start: 0
+    end: 4320
+    children: []
+- name: profiles/switch-profile.md
+  filename: src/profiles/switch-profile.md
+  section:
+    id: смена-профиля
+    title: Смена профиля
+    level: 0
+    data: {}
+    start: 0
+    end: 1509
+    children: []
+- name: profiles/delete-profile.md
+  filename: src/profiles/delete-profile.md
+  section:
+    id: удаление-профиля
+    title: Удаление профиля
+    level: 0
+    data: {}
+    start: 0
+    end: 1692
+    children: []
+- name: onscreen_notifications/onscreen_notifications.md
+  filename: src/onscreen_notifications/onscreen_notifications.md
+  section:
+    id: нотификации-пользовательских-действий
+    title: Нотификации пользовательских действий
+    level: 0
+    data: {}
+    start: 0
+    end: 9630
+    children: []
+- name: onscreen_notifications/priorities.md
+  filename: src/onscreen_notifications/priorities.md
+  section:
+    id: порядок-показа-нотификаций
+    title: Порядок показа нотификаций
+    level: 0
+    data: {}
+    start: 0
+    end: 2156
+    children: []
+- name: onscreen_notifications/messages.md
+  filename: src/onscreen_notifications/messages.md
+  section:
+    id: сообщения-и-опросы
+    title: Сообщения и опросы
+    level: 0
+    data: {}
+    start: 0
+    end: 6995
+    children: []
+- name: search/suggestions-search.md
+  filename: src/search/suggestions-search.md
+  section:
+    id: поиск
+    title: Поиск
+    level: 0
+    data: {}
+    start: 0
+    end: 3780
+    children: []
+- name: mediapositions/mediapositions.md
+  filename: src/mediapositions/mediapositions.md
+  section:
+    id: сохранение-медиапозиций-и-повторное-воспроизведение-контента
+    title: Сохранение медиапозиций и повторное воспроизведение контента
+    level: 0
+    data: {}
+    start: 0
+    end: 8425
+    children: []
+- name: watching_video/save-audio-track-subtitles.md
+  filename: src/watching_video/save-audio-track-subtitles.md
+  section:
+    id: сохранение-выбранной-звуковой-дорожки-и-субтитров
+    title: Сохранение выбранной звуковой дорожки и субтитров
+    level: 0
+    data: {}
+    start: 0
+    end: 2199
+    children: []
+- name: watching_video/watch_history.md
+  filename: src/watching_video/watch_history.md
+  section:
+    id: история-просмотров
+    title: История просмотров
+    level: 0
+    data: {}
+    start: 0
+    end: 3617
+    children: []
+- name: mediapositions/vod_channel.md
+  filename: src/mediapositions/vod_channel.md
+  section:
+    id: vod-контент-в-тв-плеере
+    title: VoD-контент в ТВ-плеере
+    level: 0
+    data: {}
+    start: 0
+    end: 1015
+    children: []
+- name: watching_video/multidrm.md
+  filename: src/watching_video/multidrm.md
+  section:
+    id: получение-лицензии-на-просмотр-контента
+    title: Получение лицензии на просмотр контента
+    level: 0
+    data: {}
+    start: 0
+    end: 9695
+    children: []
+- name: watching_video/download-vod.md
+  filename: src/watching_video/download-vod.md
+  section:
+    id: скачивание-контента-на-устройство
+    title: Скачивание контента на устройство
+    level: 0
+    data: {}
+    start: 0
+    end: 5306
+    children: []
+- name: device_control/device_registration.md
+  filename: src/device_control/device_registration.md
+  section:
+    id: регистрация-устройства
+    title: Регистрация устройства
+    level: 0
+    data: {}
+    start: 0
+    end: 651
+    children: []
+- name: device_control/deauthorization.md
+  filename: src/device_control/deauthorization.md
+  section:
+    id: поведение-приложения-при-получении-устройством-невалидной-сессии
+    title: Поведение приложения при получении устройством невалидной сессии.
+    level: 0
+    data: {}
+    start: 0
+    end: 1166
+    children: []
+- name: device_control/device_remove.md
+  filename: src/device_control/device_remove.md
+  section:
+    id: удаление-и-замена-устройств
+    title: Удаление и замена устройств
+    level: 0
+    data: {}
+    start: 0
+    end: 4688
+    children: []
+- name: device_settings/set-timezone.md
+  filename: src/device_settings/set-timezone.md
+  section:
+    id: смена-часового-пояса-и-региона
+    title: Смена часового пояса и региона
+    level: 0
+    data: {}
+    start: 0
+    end: 2071
+    children: []
+- name: device_settings/device-name.md
+  filename: src/device_settings/device-name.md
+  section:
+    id: смена-пользовательского-имени-устройства
+    title: Смена пользовательского имени устройства
+    level: 0
+    data: {}
+    start: 0
+    end: 2115
+    children: []
+- name: device_settings/system-settings.md
+  filename: src/device_settings/system-settings.md
+  section:
+    id: системные-настройки
+    title: Системные настройки
+    level: 0
+    data: {}
+    start: 0
+    end: 1572
+    children: []
+- name: device_settings/switch-to-legacy.md
+  filename: src/device_settings/switch-to-legacy.md
+  section:
+    id: миграция-абонентов-iptv-миграции-с-legacy-на-wink
+    title: Миграция абонентов IPTV миграции с Legacy на Wink
+    level: 0
+    data: {}
+    start: 0
+    end: 8828
+    children: []
+- name: reminders/reminders.md
+  filename: src/reminders/reminders.md
+  section:
+    id: reminders-reminders-md
+    title: reminders/reminders.md
+    level: 0
+    data: {}
+    start: 0
+    end: 2036
+    children: []
+- name: promocodes/promocodes.md
+  filename: src/promocodes/promocodes.md
+  section:
+    id: промокоды
+    title: Промокоды
+    level: 0
+    data: {}
+    start: 0
+    end: 3114
+    children: []
+- name: faq/faq.md
+  filename: src/faq/faq.md
+  section:
+    id: использование-раздела-помощь
+    title: Использование раздела «Помощь»
+    level: 0
+    data: {}
+    start: 0
+    end: 4047
+    children: []
+- name: rating/rating.md
+  filename: src/rating/rating.md
+  section:
+    id: рейтинг-ростелекома-для-vod-контента
+    title: Рейтинг Ростелекома для VoD-контента
+    level: 0
+    data: {}
+    start: 0
+    end: 3575
+    children: []
+- name: my_collection/my_collection.md
+  filename: src/my_collection/my_collection.md
+  section:
+    id: моя-коллекция
+    title: Моя коллекция
+    level: 0
+    data: {}
+    start: 0
+    end: 4947
+    children: []
+- name: tstv/intro.md
+  filename: src/tstv/intro.md
+  section:
+    id: события-клиентской-аналитики
+    title: События клиентской аналитики
+    level: 0
+    data: {}
+    start: 0
+    end: 1354
+    children: []
+- name: tstv/buy-tstv.md
+  filename: src/tstv/buy-tstv.md
+  section:
+    id: подключение-услуги-управление-просмотром
+    title: Подключение услуги «Управление просмотром»
+    level: 0
+    data: {}
+    start: 0
+    end: 5655
+    children: []
+- name: tstv/npvr.md
+  filename: src/tstv/npvr.md
+  section:
+    id: запись-передач-npvr
+    title: Запись передач (NPVR)
+    level: 0
+    data: {}
+    start: 0
+    end: 4455
+    children: []
+- name: tstv/pauselive.md
+  filename: src/tstv/pauselive.md
+  section:
+    id: пауза-и-перемотка-телеэфира-pauselive
+    title: Пауза и перемотка телеэфира (PauseLive)
+    level: 0
+    data: {}
+    start: 0
+    end: 8474
+    children: []
+- name: tstv/catchup.md
+  filename: src/tstv/catchup.md
+  section:
+    id: просмотр-прошлых-передач-catch-up
+    title: Просмотр прошлых передач (Catch-Up)
+    level: 0
+    data: {}
+    start: 0
+    end: 6126
+    children: []
+- name: services/radio.md
+  filename: src/services/radio.md
+  section:
+    id: радио
+    title: Радио
+    level: 0
+    data: {}
+    start: 0
+    end: 2722
+    children: []
+- name: services/karaoke.md
+  filename: src/services/karaoke.md
+  section:
+    id: караоке
+    title: Караоке
+    level: 0
+    data: {}
+    start: 0
+    end: 3843
+    children: []
+- name: services/usb.md
+  filename: src/services/usb.md
+  section:
+    id: просмотр-файлов-с-внешнего-накопителя
+    title: Просмотр файлов с внешнего накопителя
+    level: 0
+    data: {}
+    start: 0
+    end: 1873
+    children: []
+- name: account-status/account-blocked.md
+  filename: src/account-status/account-blocked.md
+  section:
+    id: блокировка-учетной-записи
+    title: Блокировка учетной записи
+    level: 0
+    data: {}
+    start: 0
+    end: 7264
+    children: []
+- name: ott_tv/ott-tv.md
+  filename: src/ott_tv/ott-tv.md
+  section:
+    id: услуга-wink-ott-tv
+    title: Услуга Wink OTT-TV
+    level: 0
+    data: {}
+    start: 0
+    end: 8356
+    children: []
+- name: legacy/legacy_bills.md
+  filename: src/legacy/legacy_bills.md
+  section:
+    id: электронный-счет-legacy-stb
+    title: Электронный счет Legacy STB
+    level: 0
+    data: {}
+    start: 0
+    end: 3427
+    children: []
+- name: assistants/assistant-integration.md
+  filename: src/assistants/assistant-integration.md
+  section:
+    id: интеграция-голосовых-помощников
+    title: Интеграция голосовых помощников
+    level: 0
+    data: {}
+    start: 0
+    end: 7078
+    children: []
+- name: _changelog.md
+  filename: src/_changelog.md
+  section:
+    id: список-изменений
+    title: Список изменений
+    level: 0
+    data: {}
+    start: 0
+    end: 69
+    children: []

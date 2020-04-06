@@ -189,85 +189,88 @@ class TestIterSections(TestCase):
             self.assertEqual(section, sections.pop(0))
 
 
-# class TestToDict(TestCase):
+class TestToDict(TestCase):
 
-#     maxDiff = None
+    maxDiff = None
 
-#     def test_single(self):
-#         chapter = Chapter('some/filename.md', 'name', main_section)
-#         section = Section(level=0,
-#                           start=0,
-#                           end=100,
-#                           data={'field': 'value'},
-#                           title="Main Title",
-#                           chapter=chapter)
-#         section.id = '1'
-#         expected = {
-#             'id': '1',
-#             'title': "Main Title",
-#             'level': 0,
-#             'data': {'field': 'value'},
-#             'start': 0,
-#             'end': 100,
-#             'children': []
-#         }
-#         self.assertEqual(section.to_dict(), expected)
+    def test_single_section(self):
+        main_section = Section(level=0,
+                               start=0,
+                               end=100,
+                               data={'field': 'value'},
+                               title="Main Title")
+        main_section.id = '1'
+        chapter = Chapter('some/filename.md', 'name', main_section)
+        expected = {
+            'name': 'name',
+            'filename': 'some/filename.md',
+            'section': {
+                'id': '1',
+                'title': "Main Title",
+                'level': 0,
+                'data': {'field': 'value'},
+                'start': 0,
+                'end': 100,
+                'children': []
+            }
+        }
+        self.assertEqual(chapter.to_dict(), expected)
 
-#     def test_with_children(self):
-#         chapter = Mock()
-#         parent = Section(level=0,
-#                          start=0,
-#                          end=200,
-#                          data={'field1': 'val1'},
-#                          title="Parent Title",
-#                          chapter=chapter)
-#         child1 = Section(level=1,
-#                          start=110,
-#                          end=190,
-#                          data={'field2': 'val2'},
-#                          title="Child Title 1",
-#                          chapter=None)
-#         child2 = Section(level=2,
-#                          start=150,
-#                          end=190,
-#                          data={'field3': 'val3'},
-#                          title="Child Title 2",
-#                          chapter=None)
-#         parent.id = '1'
-#         child1.id = '2'
-#         child2.id = '3'
+    def test_with_children(self):
+        main_section = Section(level=0,
+                         start=0,
+                         end=200,
+                         data={'field1': 'val1'},
+                         title="Parent Title")
+        child1 = Section(level=1,
+                         start=110,
+                         end=190,
+                         data={'field2': 'val2'},
+                         title="Child Title 1",)
+        child2 = Section(level=2,
+                         start=150,
+                         end=190,
+                         data={'field3': 'val3'},
+                         title="Child Title 2")
+        main_section.id = '1'
+        child1.id = '2'
+        child2.id = '3'
 
-#         parent.add_child(child1)
-#         child1.add_child(child2)
-#         expected = {
-#             'id': '1',
-#             'title': "Parent Title",
-#             'level': 0,
-#             'data': {'field1': 'val1'},
-#             'start': 0,
-#             'end': 200,
-#             'children': [
-#                 {
-#                     'id': '2',
-#                     'title': "Child Title 1",
-#                     'level': 1,
-#                     'data': {'field2': 'val2'},
-#                     'start': 110,
-#                     'end': 190,
-#                     'children': [
-#                         {
-#                             'id': '3',
-#                             'title': "Child Title 2",
-#                             'level': 2,
-#                             'data': {'field3': 'val3'},
-#                             'start': 150,
-#                             'end': 190,
-#                             'children': []
-#                         }
-#                     ]
-#                 }
-#             ]
-#         }
-#         self.assertEqual(parent.to_dict(), expected)
+        main_section.add_child(child1)
+        child1.add_child(child2)
+        chapter = Chapter('some/filename.md', 'name', main_section)
 
-
+        expected = {
+            'name': 'name',
+            'filename': 'some/filename.md',
+            'section': {
+                'id': '1',
+                'title': "Parent Title",
+                'level': 0,
+                'data': {'field1': 'val1'},
+                'start': 0,
+                'end': 200,
+                'children': [
+                    {
+                        'id': '2',
+                        'title': "Child Title 1",
+                        'level': 1,
+                        'data': {'field2': 'val2'},
+                        'start': 110,
+                        'end': 190,
+                        'children': [
+                            {
+                                'id': '3',
+                                'title': "Child Title 2",
+                                'level': 2,
+                                'data': {'field3': 'val3'},
+                                'start': 150,
+                                'end': 190,
+                                'children': []
+                            }
+                        ]
+                    }
+                ]
+            }
+        }
+        self.assertEqual(chapter.to_dict(), expected)

@@ -1,9 +1,11 @@
+import yaml
 from unittest import TestCase
 from unittest.mock import Mock, patch
 from pathlib import Path
 
 from foliant.meta.generate import (Chunk, fix_chunk_ends, get_section,
-                                   split_by_headings, get_meta_for_chapter)
+                                   split_by_headings, get_meta_for_chapter,
+                                   load_meta)
 
 from .utils import get_test_data_text, TEST_DATA_PATH
 
@@ -286,3 +288,20 @@ class TestGetMetaForChapter(TestCase):
         main_section = chapter.main_section
         self.assertEqual(main_section.data, expected_data)
         self.assertEqual(len(main_section.children), 0)
+
+
+class TestLoadMeta(TestCase):
+    maxDiff = None
+
+    def test_folder(self):
+        md_root = 'test/test_data/load_meta'
+        chapters = [
+            'chapter_only_yfm.md',
+            'chapter_with_meta.md',
+            'chapter_with_one_meta_tag.md',
+            'chapter_without_meta.md'
+        ]
+        with open('test/test_data/load_meta.yml') as f:
+            expected = yaml.load(f, yaml.Loader)
+        meta = load_meta(chapters, md_root)
+        self.assertEqual(meta.dump(), expected)

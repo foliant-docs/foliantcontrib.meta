@@ -1,0 +1,1148 @@
+version: '1.0'
+chapters:
+- name: intro
+  filename: src/intro.md
+  section:
+    id: введение
+    title: Введение
+    level: 0
+    data: {}
+    start: 0
+    end: 146
+    children: []
+- name: balancer
+  filename: src/balancer/balancer.md
+  section:
+    id: балансировка
+    title: Балансировка
+    level: 0
+    data: {}
+    start: 0
+    end: 11065
+    children: []
+- name: auth-storage
+  filename: src/auth/auth-storage.md
+  section:
+    id: централизованное-хранилище-авторизационных-данных-и-uid-устройств
+    title: Централизованное хранилище авторизационных данных и UID устройств
+    level: 0
+    data:
+      structure:
+        topic: auth
+        entity: spec
+      importance: Обычная
+      relates:
+      - использование-методов-authstorage
+      - обработка-ошибок-authstorage
+    start: 0
+    end: 15626
+    children: []
+- name: auth-day-0
+  filename: src/auth/auth-day-0.md
+  section:
+    id: регистрация-и-авторизация-day-0
+    title: Регистрация и авторизация Day 0
+    level: 0
+    data:
+      structure:
+        topic: auth
+        entity: spec
+      draw: true
+      importance: Высокая
+    start: 0
+    end: 35348
+    children: []
+- name: sdp-auth-methods
+  filename: src/auth/sdp-auth-methods.md
+  section:
+    id: доработки-на-стороне-sdp
+    title: Доработки на стороне SDP
+    level: 0
+    data:
+      structure:
+        topic: auth
+        entity: spec
+      relates:
+      - изменение-постоянных-логинов-аккаунтов-через-поддержку
+    start: 0
+    end: 17064
+    children: []
+- name: auth-storage-usage
+  filename: src/auth/auth-storage-usage.md
+  section:
+    id: использование-методов-authstorage
+    title: Использование методов AuthStorage
+    level: 0
+    data:
+      structure:
+        topic: auth
+        entity: spec
+      draw: true
+      importance: Низкая
+    start: 0
+    end: 6694
+    children: []
+- name: auth-storage-errors
+  filename: src/auth/auth-storage-errors.md
+  section:
+    id: обработка-ошибок-authstorage
+    title: Обработка ошибок AuthStorage
+    level: 0
+    data:
+      structure:
+        topic: auth
+        entity: spec
+      draw: true
+    start: 0
+    end: 2130
+    children: []
+- name: check-login-by-action
+  filename: src/auth/check-login-by-action.md
+  section:
+    id: проверка-логина-в-зависимости-от-действия
+    title: Проверка логина в зависимости от действия
+    level: 0
+    data:
+      structure:
+        topic: auth
+        entity: spec
+      draw: true
+      relates:
+      - изменение-постоянных-логинов-аккаунтов-через-поддержку
+    start: 0
+    end: 5465
+    children: []
+- name: account-audit-nc
+  filename: src/auth/account-audit-nc.md
+  section:
+    id: история-пользователей-в-панели-администратора-new-cache
+    title: История пользователей в панели администратора New Cache
+    level: 0
+    data:
+      structure:
+        topic: auth
+        entity: spec
+      draw: true
+    start: 0
+    end: 4635
+    children: []
+- name: geoloc
+  filename: src/auth/geoloc.md
+  section:
+    id: местоположение-устройства
+    title: Местоположение устройства
+    level: 0
+    data:
+      structure:
+        topic: auth
+        entity: spec
+      draw: true
+    start: 0
+    end: 5833
+    children: []
+- name: update-token
+  filename: src/auth/update-token.md
+  section:
+    id: замена-токена-сессии
+    title: Замена токена сессии
+    level: 0
+    data:
+      structure:
+        topic: auth
+        entity: spec
+      draw: true
+    start: 0
+    end: 2132
+    children: []
+- name: migration
+  filename: src/auth/migration.md
+  section:
+    id: авторизация-при-миграции-на-wink
+    title: Авторизация при миграции на Wink
+    level: 0
+    data:
+      structure:
+        topic: auth
+        entity: spec
+      draw: true
+    start: 0
+    end: 3297
+    children: []
+- name: methods-by-session-state
+  filename: src/auth/methods-by-session-state.md
+  section:
+    id: методы-разрешенные-для-разных-типов-сессий
+    title: Методы, разрешенные для разных типов сессий
+    level: 0
+    data:
+      structure:
+        topic: auth
+        entity: spec
+      draw: true
+    start: 0
+    end: 1602
+    children: []
+- name: account-logins-delete
+  filename: src/auth/account-logins-delete.md
+  section:
+    id: изменение-постоянных-логинов-аккаунтов-через-поддержку
+    title: Изменение постоянных логинов аккаунтов через поддержку
+    level: 0
+    data:
+      structure:
+        topic: auth
+        entity: spec
+      draw: true
+    start: 0
+    end: 3190
+    children: []
+- name: custom-ui
+  filename: src/custom-ui.md
+  section:
+    id: классификация-витрин-и-пунктов-меню
+    title: Классификация витрин и пунктов меню
+    level: 0
+    data: {}
+    start: 0
+    end: 7404
+    children: []
+- name: last-viewed-media-block
+  filename: src/ui/last-viewed-media-block.md
+  section:
+    id: полка-последние-просмотры
+    title: Полка «Последние просмотры»
+    level: 0
+    data: {}
+    start: 0
+    end: 8265
+    children: []
+- name: device-name
+  filename: src/ui/device-name.md
+  section:
+    id: мои-устройства
+    title: Мои устройства
+    level: 0
+    data: {}
+    start: 0
+    end: 2880
+    children: []
+- name: errors
+  filename: src/errors.md
+  section:
+    id: спецификация-серверных-ошибок
+    title: Спецификация серверных ошибок
+    level: 0
+    data: {}
+    start: 0
+    end: 2102
+    children: []
+- name: notifications
+  filename: src/notifications/notifications.md
+  section:
+    id: нотификации
+    title: Нотификации
+    level: 0
+    data: {}
+    start: 0
+    end: 6232
+    children: []
+- name: notifications-back
+  filename: src/notifications/notifications-back.md
+  section:
+    id: общие-нотификации-клиентских-приложений
+    title: Общие нотификации клиентских приложений
+    level: 0
+    data: {}
+    start: 0
+    end: 44310
+    children: []
+- name: notifications-stb
+  filename: src/notifications/notifications-stb.md
+  section:
+    id: нотификации-для-iptv-приставок
+    title: Нотификации для IPTV-приставок
+    level: 0
+    data: {}
+    start: 0
+    end: 6514
+    children: []
+- name: notifications-sdp-nc
+  filename: src/notifications/notifications-sdp-nc.md
+  section:
+    id: нотификации-из-sdp-в-new-cache
+    title: Нотификации из SDP в New Cache
+    level: 0
+    data: {}
+    start: 0
+    end: 7517
+    children: []
+- name: sync_purchases
+  filename: src/notifications/sync_purchases.md
+  section:
+    id: системные-нотификации-о-покупке-контента
+    title: Системные нотификации о покупке контента
+    level: 0
+    data: {}
+    start: 0
+    end: 1298
+    children: []
+- name: message-service
+  filename: src/notifications/message-service.md
+  section:
+    id: сервис-сообщений-и-опросов
+    title: Сервис сообщений и опросов
+    level: 0
+    data: {}
+    start: 0
+    end: 29705
+    children: []
+- name: message-resending
+  filename: src/notifications/message-resending.md
+  section:
+    id: отправка-нотификаций-пользователям-из-других-сервисов
+    title: Отправка нотификаций пользователям из других сервисов
+    level: 0
+    data: {}
+    start: 0
+    end: 3618
+    children: []
+- name: message-service-hub-api
+  filename: src/notifications/message-service-hub-api.md
+  section:
+    id: api-централизованного-сервиса-сообщений
+    title: API централизованного сервиса сообщений
+    level: 0
+    data: {}
+    start: 0
+    end: 8831
+    children: []
+- name: message-service-api
+  filename: src/notifications/message-service-api.md
+  section:
+    id: api-регионального-сервиса-сообщений
+    title: API регионального сервиса сообщений
+    level: 0
+    data: {}
+    start: 0
+    end: 7461
+    children: []
+- name: polls
+  filename: src/notifications/polls.md
+  section:
+    id: опросы
+    title: Опросы
+    level: 0
+    data: {}
+    start: 0
+    end: 2076
+    children: []
+- name: nc_tele2
+  filename: src/nc_tele2.md
+  section:
+    id: интеграция-new-cache-с-sms-шлюзом-tele2
+    title: Интеграция New Cache с SMS-шлюзом Tele2
+    level: 0
+    data: {}
+    start: 0
+    end: 2724
+    children: []
+- name: marketing_texts
+  filename: src/marketing_texts.md
+  section:
+    id: тексты-продающих-элементов
+    title: Тексты продающих элементов
+    level: 0
+    data: {}
+    start: 0
+    end: 14605
+    children: []
+- name: marketing-texts-impl
+  filename: src/marketing-texts-impl.md
+  section:
+    id: формирование-текстов-продающих-элементов
+    title: Формирование текстов продающих элементов
+    level: 0
+    data: {}
+    start: 0
+    end: 8355
+    children: []
+- name: account-status
+  filename: src/account/account-status.md
+  section:
+    id: состояния-учетной-записи
+    title: Состояния учетной записи
+    level: 0
+    data: {}
+    start: 0
+    end: 4128
+    children: []
+- name: account-blocked
+  filename: src/account/account-blocked.md
+  section:
+    id: блокировка-учётной-записи
+    title: Блокировка учётной записи
+    level: 0
+    data: {}
+    start: 0
+    end: 10633
+    children: []
+- name: account-closed
+  filename: src/account/account-closed.md
+  section:
+    id: закрытие-учетной-записи
+    title: Закрытие учетной записи
+    level: 0
+    data: {}
+    start: 0
+    end: 2324
+    children: []
+- name: account-summary-caching
+  filename: src/account/account-summary-caching.md
+  section:
+    id: хранение-и-обновление-данных-из-аср-и-супл-в-newcache
+    title: Хранение и обновление данных из АСР и СУПЛ в NewCache
+    level: 0
+    data: {}
+    start: 0
+    end: 7052
+    children: []
+- name: reason2text
+  filename: src/account/reason2text.md
+  section:
+    id: справочники-причин-блокировки-аккаунта
+    title: Справочники причин блокировки аккаунта
+    level: 0
+    data: {}
+    start: 0
+    end: 1867
+    children: []
+- name: sdp-new-locale
+  filename: src/sdp-new-locale.md
+  section:
+    id: локализация-данных-в-sdp
+    title: Локализация данных в SDP
+    level: 0
+    data: {}
+    start: 0
+    end: 4304
+    children: []
+- name: sdp-locale-entities
+  filename: src/sdp-locale-entities.md
+  section:
+    id: локализация-данных-в-sdp-сущности
+    title: Локализация данных в SDP – сущности
+    level: 0
+    data: {}
+    start: 0
+    end: 1699
+    children: []
+- name: nc-locale
+  filename: src/nc-locale.md
+  section:
+    id: локализация-в-new-cache
+    title: Локализация в New Cache
+    level: 0
+    data: {}
+    start: 0
+    end: 8181
+    children: []
+- name: nc-admin-locale
+  filename: src/nc-admin-locale.md
+  section:
+    id: локализация-в-интерфейсе-администратора-new-cache
+    title: Локализация в интерфейсе администратора New Cache
+    level: 0
+    data: {}
+    start: 0
+    end: 2299
+    children: []
+- name: import-sdp-locale
+  filename: src/import-sdp-locale.md
+  section:
+    id: импорт-локализованных-данных-из-sdp
+    title: Импорт локализованных данных из SDP
+    level: 0
+    data: {}
+    start: 0
+    end: 3151
+    children: []
+- name: nc-static-locale
+  filename: src/nc-static-locale.md
+  section:
+    id: перевод-статических-строк-в-new-cache
+    title: Перевод статических строк в New Cache
+    level: 0
+    data: {}
+    start: 0
+    end: 1042
+    children: []
+- name: purchase-option-features
+  filename: src/purchases/purchase-option-features.md
+  section:
+    id: ключевые-особенности-варианта-покупки
+    title: Ключевые особенности варианта покупки
+    level: 0
+    data: {}
+    start: 0
+    end: 3773
+    children: []
+- name: group_purchase
+  filename: src/purchases/group_purchase.md
+  section:
+    id: группировка-вариантов-покупки
+    title: Группировка вариантов покупки
+    level: 0
+    data: {}
+    start: 0
+    end: 9568
+    children: []
+- name: quick_purchase
+  filename: src/purchases/quick_purchase.md
+  section:
+    id: quick_purchase
+    title: quick_purchase
+    level: 0
+    data: {}
+    start: 0
+    end: 3405
+    children: []
+- name: card-handling
+  filename: src/purchases/card-handling.md
+  section:
+    id: управление-банковскими-картами
+    title: Управление банковскими картами
+    level: 0
+    data: {}
+    start: 0
+    end: 26502
+    children: []
+- name: collect
+  filename: src/collection/collect.md
+  section:
+    id: коллекции
+    title: Коллекции
+    level: 0
+    data: {}
+    start: 0
+    end: 3100
+    children: []
+- name: summary
+  filename: src/payments/summary.md
+  section:
+    id: общие-сведения
+    title: Общие сведения
+    level: 0
+    data: {}
+    start: 0
+    end: 1792
+    children: []
+- name: payment-method-segment
+  filename: src/payments/payment-method-segment.md
+  section:
+    id: получение-доступных-методов-оплаты
+    title: Получение доступных методов оплаты
+    level: 0
+    data: {}
+    start: 0
+    end: 10648
+    children: []
+- name: user-buy
+  filename: src/payments/user-buy.md
+  section:
+    id: описание-метода-покупок-post-user-buy
+    title: Описание метода покупок POST /user/buy
+    level: 0
+    data: {}
+    start: 0
+    end: 2420
+    children: []
+- name: buy-vod
+  filename: src/payments/buy-vod.md
+  section:
+    id: покупка-vod-контента
+    title: Покупка VoD-контента
+    level: 0
+    data: {}
+    start: 0
+    end: 9854
+    children: []
+- name: account-refill
+  filename: src/payments/account-refill.md
+  section:
+    id: управление-балансом-лицевого-счета
+    title: Управление балансом лицевого счета
+    level: 0
+    data: {}
+    start: 0
+    end: 19011
+    children: []
+- name: background-payment-processes
+  filename: src/payments/background-payment-processes.md
+  section:
+    id: фоновые-процессы
+    title: Фоновые процессы
+    level: 0
+    data: {}
+    start: 0
+    end: 7461
+    children: []
+- name: esppref
+  filename: src/payments/esppref.md
+  section:
+    id: изменения-во-взаимодействии-sdp-и-еспп
+    title: Изменения во взаимодействии SDP и ЕСПП
+    level: 0
+    data: {}
+    start: 0
+    end: 17878
+    children: []
+- name: sdp_methods_and_entities
+  filename: src/payments/sdp_methods_and_entities.md
+  section:
+    id: описание-методов-и-таблиц-платежей-sdp
+    title: Описание методов и таблиц платежей SDP
+    level: 0
+    data: {}
+    start: 0
+    end: 321
+    children: []
+- name: r12_report
+  filename: src/payments/r12_report.md
+  section:
+    id: отчёт-реестра-платежей-r12-sdp
+    title: Отчёт реестра платежей r12 (SDP)
+    level: 0
+    data: {}
+    start: 0
+    end: 185
+    children: []
+- name: in_app
+  filename: src/purchases/in_app.md
+  section:
+    id: покупки-из-мобильных-приложений
+    title: Покупки из мобильных приложений
+    level: 0
+    data: {}
+    start: 0
+    end: 25460
+    children: []
+- name: in-app-retry-confirm
+  filename: src/purchases/in-app-retry-confirm.md
+  section:
+    id: подверждение-покупок-in-app-для-ios
+    title: Подверждение покупок In-App для iOS
+    level: 0
+    data: {}
+    start: 0
+    end: 1887
+    children: []
+- name: in-app-notifications
+  filename: src/purchases/in-app-notifications.md
+  section:
+    id: обработка-нотификаций-из-appstore-и-google-play
+    title: Обработка нотификаций из AppStore и Google Play
+    level: 0
+    data: {}
+    start: 0
+    end: 16658
+    children: []
+- name: downloading
+  filename: src/purchases/downloading.md
+  section:
+    id: скачивание-контента-на-устройство
+    title: Скачивание контента на устройство
+    level: 0
+    data: {}
+    start: 0
+    end: 4093
+    children: []
+- name: bonus_subscribe_purchase
+  filename: src/bonus/bonus_subscribe_purchase.md
+  section:
+    id: подписки-и-покупки-за-бонусы
+    title: Подписки и покупки за бонусы
+    level: 0
+    data: {}
+    start: 0
+    end: 15319
+    children: []
+- name: complex
+  filename: src/services/complex.md
+  section:
+    id: отображение-и-обработка-комплексных-услуг
+    title: Отображение и обработка "комплексных" услуг
+    level: 0
+    data: {}
+    start: 0
+    end: 10920
+    children: []
+- name: trial-services
+  filename: src/services/trial-services.md
+  section:
+    id: пробный-период-для-услуг
+    title: Пробный период для услуг
+    level: 0
+    data: {}
+    start: 0
+    end: 9044
+    children: []
+- name: services-iptv
+  filename: src/services/services-iptv.md
+  section:
+    id: управление-услугами-на-аккаунтах-с-лицевым-счетом
+    title: Управление услугами на аккаунтах с лицевым счетом
+    level: 0
+    data: {}
+    start: 0
+    end: 19296
+    children: []
+- name: sdp-subscribe-methods
+  filename: src/services/sdp-subscribe-methods.md
+  section:
+    id: методы-sdp-для-подключения-и-отключения-услуг
+    title: Методы SDP для подключения и отключения услуг
+    level: 0
+    data: {}
+    start: 0
+    end: 10112
+    children: []
+- name: discount
+  filename: src/services/discount.md
+  section:
+    id: discount
+    title: discount
+    level: 0
+    data: {}
+    start: 0
+    end: 6607
+    children: []
+- name: tabs
+  filename: src/services/tabs.md
+  section:
+    id: вкладки-услуг
+    title: Вкладки услуг
+    level: 0
+    data: {}
+    start: 0
+    end: 1625
+    children: []
+- name: pending-service-upd
+  filename: src/services/pending-service-upd.md
+  section:
+    id: заявки-на-подключение-отключение-периодической-услуги
+    title: Заявки на подключение/ отключение периодической услуги
+    level: 0
+    data: {}
+    start: 0
+    end: 21035
+    children: []
+- name: shortapi-specs-for-iptv-unifications
+  filename: src/services/shortapi-specs-for-iptv-unifications.md
+  section:
+    id: спецификация-методов-short-api-для-мрф
+    title: Спецификация методов Short API для МРФ
+    level: 0
+    data: {}
+    start: 0
+    end: 37723
+    children: []
+- name: various-periods
+  filename: src/services/various-periods.md
+  section:
+    id: подключение-услуг-на-разные-периоды
+    title: Подключение услуг на разные периоды
+    level: 0
+    data: {}
+    start: 0
+    end: 20310
+    children: []
+- name: promo-actions
+  filename: src/services/promo-actions.md
+  section:
+    id: промоакции
+    title: Промоакции
+    level: 0
+    data: {}
+    start: 0
+    end: 6819
+    children: []
+- name: ott-tv-scenarios
+  filename: src/ott-tv/ott-tv-scenarios.md
+  section:
+    id: сценарии-работы-с-услугой-ott-tv
+    title: Сценарии работы с услугой OTT-TV
+    level: 0
+    data: {}
+    start: 0
+    end: 25024
+    children: []
+- name: ott-tv-methods
+  filename: src/ott-tv/ott-tv-methods.md
+  section:
+    id: новые-или-измененные-методы-для-услуги-ott-tv
+    title: Новые или измененные методы для услуги OTT-TV
+    level: 0
+    data: {}
+    start: 0
+    end: 6272
+    children: []
+- name: ott-tv-mwapi-methods
+  filename: src/ott-tv/ott-tv-mwapi-methods.md
+  section:
+    id: спецификация-методов-short-api-для-мрф-2
+    title: Спецификация методов Short API для МРФ
+    level: 0
+    data: {}
+    start: 0
+    end: 6258
+    children: []
+- name: parental-control
+  filename: src/profiles/parental-control.md
+  section:
+    id: родительский-контроль
+    title: Родительский контроль
+    level: 0
+    data: {}
+    start: 0
+    end: 6959
+    children: []
+- name: stb-generate-promo
+  filename: src/stb-generate-promo.md
+  section:
+    id: создание-промокода-на-приставке
+    title: Создание промокода на приставке
+    level: 0
+    data: {}
+    start: 0
+    end: 4699
+    children: []
+- name: portal
+  filename: src/portal/portal.md
+  section:
+    id: взаимодействие-портала-и-бекенда
+    title: Взаимодействие портала и бекенда
+    level: 0
+    data: {}
+    start: 0
+    end: 3830
+    children: []
+- name: auth
+  filename: src/portal/auth.md
+  section:
+    id: авторизация-на-портале
+    title: Авторизация на портале
+    level: 0
+    data: {}
+    start: 0
+    end: 7500
+    children: []
+- name: registration-page
+  filename: src/portal/registration-page.md
+  section:
+    id: страница-регистрации-на-портале-itv-rt-ru
+    title: Страница регистрации на портале itv.rt.ru
+    level: 0
+    data: {}
+    start: 0
+    end: 2859
+    children: []
+- name: sessions-api
+  filename: src/portal/sessions-api.md
+  section:
+    id: методы-управления-сессиями
+    title: Методы управления сессиями
+    level: 0
+    data: {}
+    start: 0
+    end: 1002
+    children: []
+- name: content
+  filename: src/portal/content.md
+  section:
+    id: особенности-методов-получения-медиаайтемов-и-телеканалов
+    title: Особенности методов получения медиаайтемов и телеканалов
+    level: 0
+    data: {}
+    start: 0
+    end: 2439
+    children: []
+- name: ui-limitations
+  filename: src/portal/ui-limitations.md
+  section:
+    id: настройка-ui-для-портала
+    title: Настройка UI для портала
+    level: 0
+    data: {}
+    start: 0
+    end: 1318
+    children: []
+- name: new-channel-platform
+  filename: src/channels/new-channel-platform.md
+  section:
+    id: добавление-телеканалов-в-платформу
+    title: Добавление телеканалов в платформу
+    level: 0
+    data: {}
+    start: 0
+    end: 716
+    children: []
+- name: audio-pid
+  filename: src/channels/audio-pid.md
+  section:
+    id: pid-звуковых-дорожек
+    title: PID звуковых дорожек
+    level: 0
+    data: {}
+    start: 0
+    end: 752
+    children: []
+- name: nc-channels
+  filename: src/nc-channels.md
+  section:
+    id: объединение-телеканалов-под-один-id-в-new-cache
+    title: Объединение телеканалов под один ID в New Cache
+    level: 0
+    data: {}
+    start: 0
+    end: 5515
+    children: []
+- name: intro
+  filename: src/recom/intro.md
+  section:
+    id: рекомендательная-система
+    title: Рекомендательная система
+    level: 0
+    data: {}
+    start: 0
+    end: 4853
+    children: []
+- name: vod
+  filename: src/recom/vod.md
+  section:
+    id: vod
+    title: VOD
+    level: 0
+    data: {}
+    start: 0
+    end: 3552
+    children: []
+- name: epg
+  filename: src/recom/epg.md
+  section:
+    id: epg
+    title: epg
+    level: 0
+    data: {}
+    start: 0
+    end: 5516
+    children: []
+- name: pilot
+  filename: src/recom/pilot.md
+  section:
+    id: pilot
+    title: pilot
+    level: 0
+    data: {}
+    start: 0
+    end: 2086
+    children: []
+- name: tools
+  filename: src/deeplinks/tools.md
+  section:
+    id: внешние-ссылки-на-клиентские-приложения
+    title: Внешние ссылки на клиентские приложения
+    level: 0
+    data: {}
+    start: 0
+    end: 7665
+    children: []
+- name: appsflyer
+  filename: src/deeplinks/appsflyer.md
+  section:
+    id: создание-ссылок-в-appsflyer
+    title: Создание ссылок в AppsFlyer
+    level: 0
+    data: {}
+    start: 0
+    end: 1727
+    children: []
+- name: basic-links
+  filename: src/deeplinks/basic-links.md
+  section:
+    id: разделы-клиентских-приложений-доступные-по-внешним-ссылкам
+    title: Разделы клиентских приложений, доступные по внешним ссылкам
+    level: 0
+    data: {}
+    start: 0
+    end: 4781
+    children: []
+- name: link-to-target
+  filename: src/deeplinks/link-to-target.md
+  section:
+    id: внешние-ссылки-new-cache
+    title: Внешние ссылки New Cache
+    level: 0
+    data: {}
+    start: 0
+    end: 2332
+    children: []
+- name: targets
+  filename: src/targets.md
+  section:
+    id: таргеты
+    title: Таргеты
+    level: 0
+    data: {}
+    start: 0
+    end: 6818
+    children: []
+- name: multidrm-arch
+  filename: src/multidrm/multidrm-arch.md
+  section:
+    id: цели-и-схема-интеграции
+    title: Цели и схема интеграции
+    level: 0
+    data: {}
+    start: 0
+    end: 6120
+    children: []
+- name: multidrm-api-ng-import
+  filename: src/multidrm/multidrm-api-ng-import.md
+  section:
+    id: доработки-импорта-каналов-и-фильмов-в-new-cache
+    title: Доработки импорта каналов и фильмов в New Cache
+    level: 0
+    data: {}
+    start: 0
+    end: 6235
+    children: []
+- name: multidrm-methods-nc
+  filename: src/multidrm/multidrm-methods-nc.md
+  section:
+    id: доработки-на-стороне-new-cache
+    title: Доработки на стороне New Cache
+    level: 0
+    data: {}
+    start: 0
+    end: 16653
+    children: []
+- name: multidrm-api-ng-configuration
+  filename: src/multidrm/multidrm-api-ng-configuration.md
+  section:
+    id: конфигурация-new-cache
+    title: Конфигурация New Cache
+    level: 0
+    data: {}
+    start: 0
+    end: 4897
+    children: []
+- name: principles
+  filename: src/workerpool/principles.md
+  section:
+    id: принцип-работы
+    title: Принцип работы
+    level: 0
+    data: {}
+    start: 0
+    end: 16302
+    children: []
+- name: adminapi_methods
+  filename: src/workerpool/adminapi_methods.md
+  section:
+    id: методы-adminapi
+    title: Методы AdminAPI
+    level: 0
+    data: {}
+    start: 0
+    end: 4520
+    children: []
+- name: tstv
+  filename: src/tstv.md
+  section:
+    id: управление-тв-просмотром
+    title: Управление ТВ-просмотром
+    level: 0
+    data: {}
+    start: 0
+    end: 12265
+    children: []
+- name: transfer_play
+  filename: src/transfer_play.md
+  section:
+    id: перенос-воспроизведения-контента
+    title: Перенос воспроизведения контента
+    level: 0
+    data: {}
+    start: 0
+    end: 4007
+    children: []
+- name: legacy_to_wink
+  filename: src/migration/legacy_to_wink.md
+  section:
+    id: миграция-устройств-с-прошивки-legacy-на-прошивку-wink
+    title: Миграция устройств с прошивки Legacy на прошивку Wink
+    level: 0
+    data: {}
+    start: 0
+    end: 28036
+    children: []
+- name: legacy_ott_migration
+  filename: src/migration/legacy_ott_migration.md
+  section:
+    id: миграция-покупок-и-услуг-абонентов-legacy-ott-на-wink
+    title: Миграция покупок и услуг абонентов legacy OTT на Wink
+    level: 0
+    data: {}
+    start: 0
+    end: 14277
+    children: []
+- name: pin_code_migration
+  filename: src/migration/pin_code_migration.md
+  section:
+    id: настройка-пин-кода-при-миграции-с-legacy-на-wink-stb
+    title: Настройка пин-кода при миграции с Legacy на Wink STB
+    level: 0
+    data: {}
+    start: 0
+    end: 4899
+    children: []
+- name: roles
+  filename: src/admin/roles.md
+  section:
+    id: роли-пользователей-в-панели-администратора-new-cache
+    title: Роли пользователей в панели администратора New Cache
+    level: 0
+    data: {}
+    start: 0
+    end: 5616
+    children: []
+- name: faq
+  filename: src/faq/faq.md
+  section:
+    id: faq
+    title: FAQ
+    level: 0
+    data: {}
+    start: 0
+    end: 4894
+    children: []
+- name: import_epg
+  filename: src/epg/import_epg.md
+  section:
+    id: epg-2
+    title: EPG
+    level: 0
+    data: {}
+    start: 0
+    end: 8524
+    children: []
+- name: DOC-879
+  filename: src/concept/DOC-879.md
+  section:
+    id: дополнительный-атрибут-для-создания-промоакций-для-уз-с-отт-тв
+    title: Дополнительный атрибут для создания промоакций для УЗ с ОТТ-ТВ
+    level: 0
+    data: {}
+    start: 0
+    end: 904
+    children: []

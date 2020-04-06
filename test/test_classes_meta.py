@@ -2,61 +2,36 @@ import yaml
 from unittest import TestCase
 from unittest.mock import patch, mock_open
 
-from foliant.meta.classes import (Section, Chapter, Meta,
-                                  MetaDublicateIDError)
+from foliant.meta.classes import (Section, Chapter, Meta, MetaDublicateIDError,
+                                  MetaChapterDoesNotExistError,
+                                  MetaSectionDoesNotExistError)
+from foliant.meta.generate import load_meta
+from .utils import TEST_DATA_PATH
 
 
 class TestLoadMetaFromFile(TestCase):
-    def test_load_sample_file(self):
-        source = {
-            'version': '1.0',
-            'chapters': [{
-                'name': 'index',
-                'filename': 'src/index.md',
-                'section': {
-                    'id': 'main_descr',
-                    'title': 'index',
-                    'level': 0,
-                    'data': {
-                        'conf': True,
-                        'id': 'main_descr',
-                        'type': 'main',
-                        'relates': ['glossary.md']
-                    },
-                    'start': 0,
-                    'end': 4655,
-                    'children': [{
-                        'id': 'comps_descr',
-                        'title': 'Components description',
-                        'level': 1,
-                        'data': {
-                            'conf': True,
-                            'id': 'comps_descr',
-                            'relates': ['main_descr']
-                        },
-                        'start': 1224,
-                        'end': 4267,
-                        'children': []
-                    }]
-                }
-            }, {
-                'name': 'glossary',
-                'filename': 'src/glossary.md',
-                'section': {
-                    'id': 'glossary',
-                    'title': 'glossary',
-                    'level': 0,
-                    'data': {},
-                    'start': 0,
-                    'end': 446,
-                    'children': []
-                }
-            }]
-        }
+    maxDiff = None
+
+    def test_load_sample_file1(self):
         meta = Meta()
-        with patch('builtins.open', mock_open(read_data=yaml.dump(source))):
-            meta.load_meta_from_file('mocked')
-            self.assertEqual(meta.dump(), source)
+        with open(TEST_DATA_PATH / 'meta1.yml', encoding='utf8') as f:
+            source = yaml.load(f, yaml.Loader)
+        meta.load_meta_from_file(TEST_DATA_PATH / 'meta1.yml')
+        self.assertEqual(meta.dump(), source)
+
+    def test_load_sample_file2(self):
+        meta = Meta()
+        with open(TEST_DATA_PATH / 'meta2.yml', encoding='utf8') as f:
+            source = yaml.load(f, yaml.Loader)
+        meta.load_meta_from_file(TEST_DATA_PATH / 'meta2.yml')
+        self.assertEqual(meta.dump(), source)
+
+    def test_load_sample_file3(self):
+        meta = Meta()
+        with open(TEST_DATA_PATH / 'meta3.yml', encoding='utf8') as f:
+            source = yaml.load(f, yaml.Loader)
+        meta.load_meta_from_file(TEST_DATA_PATH / 'meta3.yml')
+        self.assertEqual(meta.dump(), source)
 
 
 class TestProcessIds(TestCase):
@@ -168,3 +143,45 @@ class TestProcessIds(TestCase):
         meta.process_ids()
         for section, expected_id in zip(meta.iter_sections(), expected_ids):
             self.assertEqual(section.id, expected_id)
+
+
+class TestGetChapter(TestCase):
+    def setUp(self):
+        md_root = 'test/test_data/load_meta'
+        chapters = [
+            'chapter_only_yfm.md',
+            'chapter_with_meta.md',
+            'chapter_with_one_meta_tag.md',
+            'chapter_without_meta.md'
+        ]
+        self.meta = load_meta(chapters, md_root)
+
+    def test_wrong_chapter(self):
+        with self.assertRaises(MetaChapterDoesNotExistError):
+            self.meta.get_chapter('wrong/chapter/path')
+
+    def test_relative_path(self):
+        filename = 'test/test_data/load_meta/chapter_with_meta.md'
+        chapter = self.meta.get_chapter(filename)
+        self.assertTrue(chapter.filename.endswith('chapter_with_meta.md'))
+
+    def test_absolute_path(self):
+        filename = TEST_DATA_PATH / 'load_meta/chapter_with_meta.md'
+        chapter = self.meta.get_chapter(filename)
+        self.assertTrue(chapter.filename.endswith('chapter_with_meta.md'))
+
+
+class TestGetByID(TestCase):
+    def test_id_exists(self):
+        meta = Meta()
+        meta.load_meta_from_file(TEST_DATA_PATH / 'meta3.yml')
+        id_ = 'subsection'
+        section = meta.get_by_id(id_)
+        self.assertEqual(section.id, id_)
+
+    def test_id_doesnt_exist(self):
+        meta = Meta()
+        meta.load_meta_from_file(TEST_DATA_PATH / 'meta3.yml')
+        id_ = 'nonexistant_id'
+        with self.assertRaises(MetaSectionDoesNotExistError):
+            section = meta.get_by_id(id_)
