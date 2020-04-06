@@ -2,8 +2,12 @@ import yaml
 import re
 
 from pathlib import Path, PosixPath
+from logging import getLogger
+
 from .patterns import (YFM_PATTERN, META_TAG_PATTERN, OPTION_PATTERN,
                        HEADER_PATTERN, CHUNK_PATTERN)
+
+logger = getLogger('flt.meta')
 
 
 def flatten_seq(seq):
@@ -60,18 +64,23 @@ class FlatChapters:
 
 
 def get_meta_dict_from_yfm(source: str) -> dict:
-    '''Look for YAML Front Matter and return resulting dict'''
-    data = None
+    '''
+    Look for YAML Front Matter and return resulting dict.
+    If there is no YFM — return empty dict.
+    '''
+    data = {}
     yfm_match = YFM_PATTERN.search(source)
     if yfm_match:
+        logger.debug(f'Found YFM:\n{yfm_match.group("yaml")}')
         data = yaml.load(yfm_match.group('yaml'), yaml.Loader)
-    return data or {}
+    return data
 
 
 def get_meta_dict_from_meta_tag(source: str) -> dict or None:
     '''
     Look for meta tags in the source resulting dict of metadata.
     If there are no meta tags in source — return None.
+    If there are several — choose the first one.
 
     :param source: section source without title
 
@@ -80,6 +89,7 @@ def get_meta_dict_from_meta_tag(source: str) -> dict or None:
     data = None
     meta_match = META_TAG_PATTERN.search(source)
     if meta_match:
+        logger.debug(f'Found meta tag: \n{meta_match.group(0)}')
         option_string = meta_match.group('options')
         if not option_string:
             data = {}
@@ -115,21 +125,25 @@ def iter_chunks(source: str):
          heading content,
          start position,
          end position)
-
-    TODO: seems that this pattern also is far from perfect
     '''
+    yfm_offset = 0
     if source.startswith('---\n'):
         # cut out YFM manually, otherwise the regex pattern considers
         # YAML comments as headings
         pattern = re.compile(r'^---[\s\S]+\n---$', re.MULTILINE)
-        source = pattern.sub('', source, 1)
+
+        match = pattern.search(source)
+        if match:
+            # compensate chunks offsets for removed YFM
+            yfm_offset = match.end()
+            source = pattern.sub('', source, 1)
 
     for chunk in CHUNK_PATTERN.finditer(source):
         yield (chunk.group('title'),
                len(chunk.group('level')),
                chunk.group('content'),
-               chunk.start(),
-               chunk.end())
+               chunk.start() + yfm_offset,
+               chunk.end() + yfm_offset)
 
 
 def convert_to_id(title: str, existing_ids: list) -> str:

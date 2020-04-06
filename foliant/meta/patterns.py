@@ -3,7 +3,7 @@
 import re
 
 
-YFM_PATTERN = re.compile(r'^\s*---(?P<yaml>.+?\n)---', re.DOTALL)
+YFM_PATTERN = re.compile(r'^---(?P<yaml>.+?\n)---', re.DOTALL)
 
 META_TAG_PATTERN = re.compile(
     rf'(?<!\<)\<meta(\s(?P<options>[^\<\>]*))?\>' +

@@ -1,10 +1,16 @@
 '''Module defining load_meta function for generating metadata from md-sources'''
 
-from pathlib import PosixPath
+import re
+
+from pathlib import Path, PosixPath
+from logging import getLogger
+
 from .tools import (FlatChapters, get_meta_dict_from_yfm,
                     get_meta_dict_from_meta_tag, iter_chunks,
                     get_header_content)
 from .classes import Meta, Chapter, Section
+
+logger = getLogger('flt.meta')
 
 
 class Chunk:
@@ -37,11 +43,14 @@ def load_meta(chapters: list, md_root: str or PosixPath = 'src') -> Meta:
 
     :returns: Meta object
     '''
+    logger.debug(f'LOAD_META start.\nchapters: {chapters}\nmd_root: {md_root}')
+
     c = FlatChapters(chapters=chapters, parent_dir=md_root)
 
     meta = Meta()
     for path_ in c.paths:
-        chapter = get_meta_for_chapter(path_)
+        name = str(path_.relative_to(md_root))
+        chapter = get_meta_for_chapter(path_, name)
         if chapter:
             meta.add_chapter(chapter)
 
@@ -49,21 +58,26 @@ def load_meta(chapters: list, md_root: str or PosixPath = 'src') -> Meta:
     return meta
 
 
-def get_meta_for_chapter(ch_path: PosixPath) -> Chapter:
+def get_meta_for_chapter(ch_path: str or PosixPath,
+                         name: str or None = None) -> Chapter:
     '''
     Get metadata for one chapter.
 
     :param ch_path: path to chapter source file.
+    :param name:    chapter name. If None — it's equal to ch_path.
 
     :returns: a Chapter object.
     '''
-    if not ch_path.exists():
-        return
-    with open(ch_path, encoding='utf8') as f:
+    chapter_path = Path(ch_path)
+    logger.debug(f'Getting meta for chapter {chapter_path}')
+    if not chapter_path.exists():
+        logger.debug(f'Chapter does not exist, skipping')
+        return None
+    with open(chapter_path, encoding='utf8') as f:
         content = f.read()
 
-    chapter = Chapter(filename=str(ch_path),
-                      name=ch_path.stem)
+    chapter = Chapter(filename=str(chapter_path),
+                      name=name or str(chapter_path))
     header, chunks = split_by_headings(content)
 
     main_section = get_section(header)
@@ -138,6 +152,7 @@ def get_section(chunk: Chunk) -> Section or None:
     Parse chunk content and create a Section object from its metadata.
     If no metadata in chunk — return None.
     '''
+    logger.debug(f'Parsing chunk {chunk}')
     yfm_data = None
     if chunk.level == 0:  # main section
         # main section must always be present in header (0-level chunk), but it
@@ -147,8 +162,9 @@ def get_section(chunk: Chunk) -> Section or None:
     tag_data = get_meta_dict_from_meta_tag(chunk.content)
 
     data = tag_data if tag_data is not None else yfm_data
-
+    title = re.sub('{#.+?}$', '', chunk.title).strip()
     if data is not None:
+        logger.debug(f'Adding section. Title: {title}, data: {data}')
         result = Section(chunk.level, chunk.start, chunk.end,
-                         data, title=chunk.title)
+                         data, title=title)
         return result

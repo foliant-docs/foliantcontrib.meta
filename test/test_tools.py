@@ -31,8 +31,39 @@ content
                                'subfield2': True}}
         self.assertEqual(get_meta_dict_from_yfm(source), expected)
 
+    def test_yfm_with_comments(self):
+        source = '''---
+field1: value1
+field2: 2
+field3:  # this is important
+    - li1
+    - li2
+#field31: commented
+field4:
+    subfield1: subvalue
+    subfield2: true
+---
+
+# First caption
+
+content
+'''
+        expected = {'field1': 'value1',
+                    'field2': 2,
+                    'field3': ['li1', 'li2'],
+                    'field4': {'subfield1': 'subvalue',
+                               'subfield2': True}}
+        self.assertEqual(get_meta_dict_from_yfm(source), expected)
+
     def test_yfm_missing(self):
         source = '''# First caption
+
+content
+'''
+        self.assertEqual(get_meta_dict_from_yfm(source), {})
+
+    def test_yfm_incorrect(self):
+        source = '''\n---\nfield: value\n---\n\n# First caption
 
 content
 '''
@@ -44,6 +75,21 @@ class TestGetMetaDictFromMetaTag(TestCase):
         source = '''
 Lorem ipsum dolor sit amet.
 
+<meta field1="value1" field2="2" field3="['li1', 'li2']" field4="{subfield1: subvalue, subfield2: true}"></meta>
+
+Lorem ipsum dolor sit amet, consectetur.
+'''
+        expected = {'field1': 'value1',
+                    'field2': 2,
+                    'field3': ['li1', 'li2'],
+                    'field4': {'subfield1': 'subvalue',
+                               'subfield2': True}}
+        self.assertEqual(get_meta_dict_from_meta_tag(source), expected)
+
+    def test_meta_tag_formatted(self):
+        source = '''
+Lorem ipsum dolor sit amet.
+
 <meta
     field1="value1"
     field2="2"
@@ -52,7 +98,9 @@ Lorem ipsum dolor sit amet.
         - li2"
     field4="
         subfield1: subvalue
-        subfield2: true">
+        subfield2: true
+    "
+>
 </meta>
 
 Lorem ipsum dolor sit amet, consectetur.
@@ -64,10 +112,6 @@ Lorem ipsum dolor sit amet, consectetur.
                                'subfield2': True}}
         self.assertEqual(get_meta_dict_from_meta_tag(source), expected)
 
-    def test_meta_tag_missing(self):
-        source = '''Lorem ipsum dolor sit amet.'''
-        self.assertIsNone(get_meta_dict_from_meta_tag(source))
-
     def test_no_options(self):
         source = '''
 Lorem ipsum dolor sit amet.
@@ -77,6 +121,35 @@ Lorem ipsum dolor sit amet.
 Lorem ipsum dolor sit amet, consectetur.
 '''
         self.assertEqual(get_meta_dict_from_meta_tag(source), {})
+
+    def test_meta_tag_missing(self):
+        source = '''Lorem ipsum dolor sit amet.'''
+        self.assertIsNone(get_meta_dict_from_meta_tag(source))
+
+    def test_meta_tag_error(self):
+        source = '''
+Lorem ipsum dolor sit amet.
+
+<meta field="value1"></mema>
+
+Lorem ipsum dolor sit amet, consectetur.
+'''
+        self.assertIsNone(get_meta_dict_from_meta_tag(source))
+
+    def test_two_meta_tags(self):
+        source = '''
+Lorem ipsum dolor sit amet.
+
+<meta field1="value1" field2="value2"></meta>
+
+Lorem ipsum dolor sit amet, consectetur.
+
+<meta field1="newvalue1" field2="newvalue2"></meta>
+
+Lorem ipsum dolor sit amet, consectetur.
+'''
+        expected = {'field1': 'value1', 'field2': 'value2'}
+        self.assertEqual(get_meta_dict_from_meta_tag(source), expected)
 
 
 class TestGetHeaderContent(TestCase):
@@ -200,7 +273,7 @@ class TestIterChunks(TestCase):
                   f'### {titles[2]}\n\n{content}\n\n')  # 449
         levels = [1, 2, 3]
 
-        pos = [2, 150, 299, 449]
+        pos = [22, 170, 319, 469]
         starts = pos[:-1]
         ends = pos[1:]
 
@@ -221,7 +294,7 @@ class TestIterChunks(TestCase):
                   f'### {titles[2]}\n\n{content}\n\n')  # 449
         levels = [1, 2, 3]
 
-        pos = [2, 150, 299, 449]
+        pos = [39, 187, 336, 486]
         starts = pos[:-1]
         ends = pos[1:]
 

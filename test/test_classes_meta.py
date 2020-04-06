@@ -1,88 +1,9 @@
 import yaml
 from unittest import TestCase
-from unittest.mock import Mock, patch, mock_open
+from unittest.mock import patch, mock_open
 
 from foliant.meta.classes import (Section, Chapter, Meta,
-                                  MetaHierarchyError, MetaDublicateIDError)
-
-###################
-#     Section     #
-###################
-
-
-class TestAddChild(TestCase):
-    def test_add_child_with_lower_level(self):
-        chapter = Mock()
-        parent = Section(level=1,
-                         start=0,
-                         end=100,
-                         data={},
-                         title="Parent Title",
-                         chapter=chapter)
-        child = Section(level=3,
-                        start=10,
-                        end=90,
-                        data={},
-                        title="Child Title",
-                        chapter=None)
-        parent.add_child(child)
-        self.assertIn(child, parent.children)
-        self.assertIs(parent.chapter, child.chapter)
-        self.assertIs(child.parent, parent)
-
-    def test_add_child_with_higher_level(self):
-        chapter = Mock()
-        parent = Section(level=2,
-                         start=0,
-                         end=100,
-                         data={},
-                         title="Parent Title",
-                         chapter=chapter)
-        child = Section(level=1,
-                        start=110,
-                        end=190,
-                        data={},
-                        title="Child Title",
-                        chapter=None)
-        with self.assertRaises(MetaHierarchyError):
-            parent.add_child(child)
-        self.assertNotIn(child, parent.children)
-        self.assertIsNone(child.chapter)
-        self.assertIsNone(child.parent)
-
-#####################
-#      Chapter      #
-#####################
-
-
-class TestMainSection(TestCase):
-    def test_set_main_section(self):
-        section = Section(level=0,
-                          start=0,
-                          end=100,
-                          data={'id': 'id1'},
-                          title='title1')
-        chapter = Chapter(filename='filename',
-                          name='chapter_name')
-        chapter.main_section = section
-        self.assertIs(section.chapter, chapter)
-        self.assertIs(chapter.main_section, section)
-
-    def test_autoset_title(self):
-        section = Section(level=0,
-                          start=0,
-                          end=100,
-                          data={'id': 'id1'},
-                          title='')
-        chapter = Chapter(filename='filename',
-                          name='chapter_name')
-        chapter.main_section = section
-        self.assertEqual(section.title, chapter.name)
-
-
-###################
-#      Meta       #
-###################
+                                  MetaDublicateIDError)
 
 
 class TestLoadMetaFromFile(TestCase):

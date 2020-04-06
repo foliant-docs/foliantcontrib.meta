@@ -1,3 +1,9 @@
+# 1.3.2
+
+- Cutomids are now cut out from titles.
+- Added logging.
+- Fix: get_section_by_offset didn't count YFM.
+
 # 1.3.1
 
 - `remove_meta` now also trims whitespaces in the beginning of the file after removing YFM
