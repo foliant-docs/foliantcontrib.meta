@@ -2,6 +2,8 @@
 
 - Cutomids are now cut out from titles.
 - Added logging.
+- Meta commands now support `--debug -d` and `--quiet -q` arguments.
+- `meta generate` command now gives some verbose output after work.
 - Fix: get_section_by_offset didn't count YFM.
 
 # 1.3.1

@@ -2,6 +2,7 @@
 from pathlib import Path
 from pkgutil import iter_modules
 from importlib import import_module
+from logging import DEBUG, WARNING
 
 from cliar import set_help, set_arg_map, set_metavars
 
@@ -54,13 +55,19 @@ class Cli(BaseCli):
             'meta_command': 'Meta command to run',
             'project_path': 'Path to the directory with the config file (default: ".").',
             'config_file_name': 'Name of the Foliant config file (default: "foliant.yml").',
+            'quiet': 'Hide all output accept for the result. Useful for piping.',
+            'debug': 'Log all events during build. If not set, only warnings and errors are logged.'
         }
     )
     def meta(self,
              meta_command,
              config_file_name='foliant.yml',
-             project_path=Path('.')):
+             project_path=Path('.'),
+             debug=False,
+             quiet=False,
+             ):
         '''Run meta command'''
+        self.logger.setLevel(DEBUG if debug else WARNING)
 
         self.logger.info('Meta command started.')
         try:
@@ -76,5 +83,5 @@ class Cli(BaseCli):
         meta_command_module = import_module(f'foliant.meta_commands.{meta_command}')
         self.logger.debug(f'Imported meta command {meta_command_module}.')
 
-        meta_command_module.MetaCommand(context, self.logger).run()
+        meta_command_module.MetaCommand(context, self.logger, quiet, debug).run()
         self.logger.info('Meta command finished.')
