@@ -5,7 +5,9 @@ import re
 from pathlib import Path, PosixPath
 from logging import getLogger
 
-from .tools import (FlatChapters, get_meta_dict_from_yfm,
+from foliant.contrib.chapters import Chapters
+
+from .tools import (get_meta_dict_from_yfm,
                     get_meta_dict_from_meta_tag, iter_chunks,
                     get_header_content)
 from .classes import Meta, Chapter, Section
@@ -45,10 +47,10 @@ def load_meta(chapters: list, md_root: str or PosixPath = 'src') -> Meta:
     '''
     logger.debug(f'LOAD_META start.\nchapters: {chapters}\nmd_root: {md_root}')
 
-    c = FlatChapters(chapters=chapters, parent_dir=md_root)
+    c = Chapters(chapters)
 
     meta = Meta()
-    for path_ in c.paths:
+    for path_ in c.paths(md_root):
         name = str(path_.relative_to(md_root))
         chapter = get_meta_for_chapter(path_, name)
         if chapter:

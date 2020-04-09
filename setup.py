@@ -28,6 +28,7 @@ setup(
     platforms='any',
     install_requires=[
         'foliant>=1.0.4',
+        'foliantcontrib.utils.chapters>=1.0.2',
         'schema>=0.7.0'
     ],
     classifiers=[
