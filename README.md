@@ -145,7 +145,7 @@ A property which holds the main section of the chapter.
 
 **name**
 
-Chapter's name.
+Chapter's name as stated in foliant.yml.
 
 **filename**
 
@@ -161,7 +161,7 @@ This method returns an iterator which yields the section's child sections (`Sect
 
 **get_source(self, without_meta=True) -> str**
 
-Returns section's source. If `without_meta` is `True`, all meta tags are cut out from the text.
+Returns section's source. The section title is also included in the output. If `without_meta` is `True`, all meta tags are cut out from the text.
 
 **is_main(self) -> bool**
 

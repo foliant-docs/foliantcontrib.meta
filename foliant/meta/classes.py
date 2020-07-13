@@ -312,7 +312,7 @@ class Section:
 
     def get_source(self, without_meta=True) -> str:
         '''
-        Get section source text.
+        Get section source text. Section title is included.
 
         :param without_meta: if True — all meta tags will be removed from the
                              returned source.
