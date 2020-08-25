@@ -182,6 +182,10 @@ Section's title.
 
 Holds reference to section's chapter.
 
+**parent**
+
+Holds section's parent section. Main sections have `None` in this property.
+
 **children**
 
 Holds list of section's children in proper order.
