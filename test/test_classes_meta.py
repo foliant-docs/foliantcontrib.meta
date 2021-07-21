@@ -1,12 +1,15 @@
 import yaml
-from unittest import TestCase
-from unittest.mock import patch, mock_open
 
-from foliant.meta.classes import (Section, Chapter, Meta, MetaDublicateIDError,
-                                  MetaChapterDoesNotExistError,
-                                  MetaSectionDoesNotExistError)
-from foliant.meta.generate import load_meta
+from unittest import TestCase
+
 from .utils import TEST_DATA_PATH
+from foliant.meta.classes import Chapter
+from foliant.meta.classes import Meta
+from foliant.meta.classes import MetaChapterDoesNotExistError
+from foliant.meta.classes import MetaDublicateIDError
+from foliant.meta.classes import MetaSectionDoesNotExistError
+from foliant.meta.classes import Section
+from foliant.meta.generate import load_meta
 
 
 class TestLoadMetaFromFile(TestCase):

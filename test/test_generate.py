@@ -1,13 +1,18 @@
 import yaml
-from unittest import TestCase
-from unittest.mock import Mock, patch
+
 from pathlib import Path
+from unittest import TestCase
+from unittest.mock import patch
 
-from foliant.meta.generate import (Chunk, fix_chunk_ends, get_section,
-                                   split_by_headings, get_meta_for_chapter,
-                                   load_meta)
+from foliant.meta.generate import Chunk
+from foliant.meta.generate import fix_chunk_ends
+from foliant.meta.generate import get_meta_for_chapter
+from foliant.meta.generate import get_section
+from foliant.meta.generate import load_meta
+from foliant.meta.generate import split_by_headings
 
-from .utils import get_test_data_text, TEST_DATA_PATH
+from .utils import TEST_DATA_PATH
+from .utils import get_test_data_text
 
 
 class TestFixChunkEnds(TestCase):

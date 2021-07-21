@@ -86,7 +86,7 @@ Typical way to work with metadata is to run the `load_meta` function from the `f
 
 This function collects metadata and returns a `Meta` object, which gives access to all sections and meta-fields in the project.
 
-The required parameter is `chapters` — list of chaters loaded from foliant.yml
+The required parameter is `chapters` — list of chapters loaded from foliant.yml
 
 ```python
 >>> from foliant.meta.generate import load_meta
@@ -145,11 +145,11 @@ A property which holds the main section of the chapter.
 
 **name**
 
-Chapter's name as stated in foliant.yml.
+Chapter's name as stated in foliant.yml (`'chapter.md'`).
 
 **filename**
 
-Chapter's filename.
+Chapter's filepath string (`'src/chapter.md'`).
 
 ### The Section class
 

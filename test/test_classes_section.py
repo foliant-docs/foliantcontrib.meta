@@ -1,7 +1,8 @@
 from unittest import TestCase
 from unittest.mock import Mock
 
-from foliant.meta.classes import Section, MetaHierarchyError
+from foliant.meta.classes import MetaHierarchyError
+from foliant.meta.classes import Section
 
 
 class TestAddChild(TestCase):

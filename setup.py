@@ -15,7 +15,7 @@ setup(
     description=SHORT_DESCRIPTION,
     long_description=LONG_DESCRIPTION,
     long_description_content_type='text/markdown',
-    version='1.3.2',
+    version='1.3.3',
     author='Daniil Minukhin',
     author_email='ddddsa@gmail.com',
     url='https://github.com/foliant-docs/foliantcontrib.meta',
@@ -28,8 +28,8 @@ setup(
     platforms='any',
     install_requires=[
         'foliant>=1.0.4',
-        'foliantcontrib.utils.chapters>=1.0.2',
-        'schema>=0.7.0'
+        'foliantcontrib.utils>=1.0.2',
+        'schema>=0.7.0',
     ],
     classifiers=[
         "Development Status :: 5 - Production/Stable",

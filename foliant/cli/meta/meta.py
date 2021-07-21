@@ -1,10 +1,13 @@
 '''Main CLI responsible for the ``meta`` command.'''
+from importlib import import_module
+from logging import DEBUG
+from logging import WARNING
 from pathlib import Path
 from pkgutil import iter_modules
-from importlib import import_module
-from logging import DEBUG, WARNING
 
-from cliar import set_help, set_arg_map, set_metavars
+from cliar import set_arg_map
+from cliar import set_help
+from cliar import set_metavars
 
 from foliant.cli.base import BaseCli
 from foliant.config import Parser

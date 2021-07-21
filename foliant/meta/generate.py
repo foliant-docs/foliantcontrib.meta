@@ -2,15 +2,19 @@
 
 import re
 
-from pathlib import Path, PosixPath
 from logging import getLogger
+from pathlib import Path
+from pathlib import PosixPath
 
 from foliant.contrib.chapters import Chapters
 
-from .tools import (get_meta_dict_from_yfm,
-                    get_meta_dict_from_meta_tag, iter_chunks,
-                    get_header_content)
-from .classes import Meta, Chapter, Section
+from .classes import Chapter
+from .classes import Meta
+from .classes import Section
+from .tools import get_header_content
+from .tools import get_meta_dict_from_meta_tag
+from .tools import get_meta_dict_from_yfm
+from .tools import iter_chunks
 
 logger = getLogger('flt.meta')
 

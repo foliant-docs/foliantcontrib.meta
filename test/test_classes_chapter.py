@@ -1,8 +1,9 @@
 from unittest import TestCase
 
-from foliant.meta.classes import Section, Chapter
+from .utils import TEST_DATA_PATH
+from foliant.meta.classes import Chapter
+from foliant.meta.classes import Section
 from foliant.meta.generate import get_meta_for_chapter
-from .utils import get_test_data_text, TEST_DATA_PATH
 
 
 class TestMainSection(TestCase):
@@ -31,10 +32,10 @@ class TestMainSection(TestCase):
 
     def test_set_children_chapter(self):
         main_section = Section(level=0,
-                         start=0,
-                         end=200,
-                         data={'field1': 'val1'},
-                         title="Parent Title")
+                               start=0,
+                               end=200,
+                               data={'field1': 'val1'},
+                               title="Parent Title")
         child1 = Section(level=1,
                          start=110,
                          end=140,
@@ -148,10 +149,10 @@ class TestIterSections(TestCase):
 
     def test_with_children(self):
         main_section = Section(level=0,
-                         start=0,
-                         end=200,
-                         data={'field1': 'val1'},
-                         title="Parent Title")
+                               start=0,
+                               end=200,
+                               data={'field1': 'val1'},
+                               title="Parent Title")
         chapter = Chapter('some/filename.md', 'name', main_section)
         child1 = Section(level=1,
                          start=110,
@@ -218,10 +219,10 @@ class TestToDict(TestCase):
 
     def test_with_children(self):
         main_section = Section(level=0,
-                         start=0,
-                         end=200,
-                         data={'field1': 'val1'},
-                         title="Parent Title")
+                               start=0,
+                               end=200,
+                               data={'field1': 'val1'},
+                               title="Parent Title")
         child1 = Section(level=1,
                          start=110,
                          end=190,

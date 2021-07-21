@@ -1,3 +1,7 @@
+# 1.3.3
+
+- New utils module.
+
 # 1.3.2
 
 - Cutomids are now cut out from titles.

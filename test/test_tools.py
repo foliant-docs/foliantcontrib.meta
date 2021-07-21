@@ -1,10 +1,11 @@
 from unittest import TestCase
-from foliant.meta.tools import (get_meta_dict_from_yfm,
-                                get_meta_dict_from_meta_tag,
-                                get_header_content,
-                                iter_chunks,
-                                convert_to_id,
-                                remove_meta)
+
+from foliant.meta.tools import convert_to_id
+from foliant.meta.tools import get_header_content
+from foliant.meta.tools import get_meta_dict_from_meta_tag
+from foliant.meta.tools import get_meta_dict_from_yfm
+from foliant.meta.tools import iter_chunks
+from foliant.meta.tools import remove_meta
 
 
 class TestGetMetaDictFromYfm(TestCase):
@@ -252,7 +253,7 @@ Header content
         self.assertEqual(get_header_content(source), expected)
 
     def test_no_header(self):
-        source = '# First caption right away\n\Lorem ipsum dolor sit amet.'
+        source = '# First caption right away\n\nLorem ipsum dolor sit amet.'
 
         self.assertEqual(get_header_content(source), '')
 

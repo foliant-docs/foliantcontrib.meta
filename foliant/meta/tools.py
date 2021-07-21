@@ -1,10 +1,13 @@
-import yaml
 import re
+import yaml
 
 from logging import getLogger
 
-from .patterns import (YFM_PATTERN, META_TAG_PATTERN, OPTION_PATTERN,
-                       HEADER_PATTERN, CHUNK_PATTERN)
+from .patterns import CHUNK_PATTERN
+from .patterns import HEADER_PATTERN
+from .patterns import META_TAG_PATTERN
+from .patterns import OPTION_PATTERN
+from .patterns import YFM_PATTERN
 
 logger = getLogger('flt.meta')
 

@@ -1,12 +1,16 @@
 '''Module defining Meta class'''
 
 from __future__ import annotations
+
 import yaml
 
-from schema import Schema, Optional
-from pathlib import Path, PosixPath
+from pathlib import Path
+from pathlib import PosixPath
+from schema import Optional
+from schema import Schema
 
-from .tools import convert_to_id, remove_meta
+from .tools import convert_to_id
+from .tools import remove_meta
 
 
 SECTION_SCHEMA = Schema(
