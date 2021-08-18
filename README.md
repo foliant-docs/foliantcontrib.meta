@@ -34,6 +34,8 @@ You may also use regular XML-like format with `meta` tag:
 
 > If `meta` tag is present, all Metadata from YAML Front Matter is ignored.
 
+# Documentation
+
 ## User's guide
 
 Metadata in Foliant allows you to assign additional properties to the *chapters* (Markdown files) and *sections* (parts of a Markdown file) of your project. These properties will be present in the Markdown sources but won't be directly rendered in the built documents. It is up to extensions to make use of these properties and alter your document in the desired way.
