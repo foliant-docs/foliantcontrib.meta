@@ -36,47 +36,90 @@ You may also use regular XML-like format with `meta` tag:
 
 ## User's guide
 
-Metadata allows you to specific properties to your documents, which won't be visible directly to the end-user. These properties may be:
+Metadata in Foliant allows you to assign additional properties to the *chapters* (Markdown files) and *sections* (parts of a Markdown file) of your project. These properties will be present in the Markdown sources but won't be directly rendered in the built documents. It is up to extensions to make use of these properties and alter your document in the desired way.
 
-- the document author's name;
-- Jira ticket id;
-- date of last revision;
-- or anything else, there is no limitation.
+For instance, [Confluence](https://foliant-docs.github.io/docs/backends/confluence/) backend uses metadata to upload specific parts of your project into separate Confluence articles. [AltStructure](https://foliant-docs.github.io/docs/config/alt_structure/) config extension uses metadata to rearrange the chapters of your project in the final build. [TemplateParser](https://foliant-docs.github.io/docs/preprocessors/templateparser/) preprocessor can access the metadata and generate chunks of text using the properties defined in it.
 
-This module is required for metadata to work in your projects. But it doesn't care about most of the fields and their values. The only exception being the `id` field. See **Special fields** section.
+The `foliantcontrib.meta` package is required for metadata to work, but you won't need to install it directly. Every extension which uses metadata will install it automatically.
+
+### Syntax
+
+There are two ways to define metadata:
+
+- In a [YAML Front Matter](http://www.yaml.org/spec/1.2/spec.html#id2760395) — to define metadata for a whole chapter,
+- Using the `<meta></meta>` tag to define metadata for a section, as well as for the chapter.
+
+**YAML Front Matter**
+
+YAML Front Matter (or YFM for short) must be defined at the very beginning of a Markdown file. Properties in the YFM are applied to the whole chapter.
+
+```yaml
+---
+author: John Smith
+revision_date: 17 August 2021
+---
+```
+
+In this example we've defined two properties: `author` and `revision_date` for one chapter.
+
+**Meta tag**
+
+Meta tags may add properties to smaller chunks of a Markdown file, as well as the whole chapter. If the meta tag is specified at the very beginning of the file, it acts similarly to the YAML Front Matter, e.g. is applied to the whole chapter. To add properties to a smaller chunk of a Markdown file, specify the tag under a heading. The metadata will be applied to the text under the heading and all nested headings.
+
+```html
+# Specification
+
+<meta author="John Smith" revision_date="17 August 2021"></meta>
+
+Lorem, ipsum dolor sit amet consectetur adipisicing elit. Aliquid neque, in, necessitatibus maxime repudiandae cum.
+
+## Additional notes
+
+Lorem ipsum, dolor, sit amet consectetur adipisicing elit. Incidunt pariatur, vel voluptatum exercitationem quae cupiditate!
+```
+
+In this example both `Specification` and `Additional notes` have the `author` and `revision_date` properties.
 
 ### Sections
 
-You can specify metadata for a whole chapter and for it's portions, which are called *sections*. Section is a fragment of the document from one heading to another one of the same level of higher.
+*Section* is a part of a Markdown file with defined metadata. Section begins with a Markdown heading (`## Heading`) and ends before the next heading of the same or higher level (`## Another heading` or `# Another heading`). A part of a Markdown document is only considered a section if the meta tag is defined in it, with one exception: the *main section*.
 
-Metadata specified at the beginning of the document (before the first heading) is applied to the whole Markdown document. We call it the *main section* of the chapter.
+The main section is defined implicitly for every chapter of your project, even if there's no meta tag or YFM in it. In other words, if the Markdown file is specified in the `chapters` in `foliant.yml`, it will appear in the meta registry, with or without meta properties.
 
-> Note that you can specify metadata for the main section either in YAML Front Matter format, or with `meta` tag.
-
-If you specify metadata after the heading of some level, it will be applied to all content inside this heading, including the nested headings. See the illustration below.
+Here's an illustration of meta sections in a chapter:
 
 ![](https://raw.githubusercontent.com/foliant-docs/foliantcontrib.meta/master/img/pic1.png)
 
 ### Special fields
 
-Right now there's only one field that is treated specially: the `id` field.
+Most meta properties don't mean anything if no extension is using them. The only exception right now is the `id` property. It is the identifier of a section.
 
-If specified, it will be used as identifier of the section. Note that IDs must be unique within the project.
+IDs are used to distinguish meta sections in the project. They must me unique inside the project. By default IDs are generated by the Meta engine implicitly, but you may override them by defining the `id` property in the section's metadata. Just make sure that it is unique.
 
-If `id` field is omitted — the section will get auto generated id based on:
+### The Meta registry
 
-- chapter filename for main section,
-- title for general sections.
+All extensions that work with metadata have access to the *Meta registry*. It is a hierarchical mapping of all sections in the project with all meta properties defined for each section.
+
+To take a look at the Meta registry in your project run the `meta generate` command
+
+```bash
+$ foliant meta generate
+Generating metadata... Done
+────────────────────
+Result: meta.yml
+```
+
+The registry is saved into the `meta.yml` file.
 
 ### Additional info
 
-Metadata works only for files, mentioned in the `chapters` section in foliant.yml. All other files in `src` dir are ignored.
+Metadata works only for files, mentioned in the `chapters` section in foliant.yml. All other files in `src` dir are ignored and won't appear in the Meta registry.
 
 When using [includes](https://foliant-docs.github.io/docs/preprocessors/includes/), all metadata from the included content is removed.
 
 ## Developer's guide
 
-You can use the powers of metadata in  your preprocessors, backends and other tools. You can define fields with special meaning for your tools and process sections based on these fields.
+You can use the powers of metadata in your preprocessors, backends and other extensions. You can define fields with special meaning for your tools and process sections based on the values in these fields.
 
 ### Getting metadata
 
@@ -84,9 +127,9 @@ Typical way to work with metadata is to run the `load_meta` function from the `f
 
 **load_meta(chapters: list, md_root: str or PosixPath = 'src') -> Meta**
 
-This function collects metadata and returns a `Meta` object, which gives access to all sections and meta-fields in the project.
+This function returns the Meta registry in a `Meta` object, which gives access to all sections and meta-fields in the project.
 
-The required parameter is `chapters` — list of chapters loaded from foliant.yml
+The required parameter for `load_meta` is `chapters` — list of chapters loaded from foliant.yml
 
 ```python
 >>> from foliant.meta.generate import load_meta
@@ -97,11 +140,11 @@ You can also specify the `md_root` parameter. If your tool is a CLI extension, `
 
 ### The Meta class
 
-Meta class holds all metadata and offers few handy methods to work with it.
+Meta class holds all project's metadata and offers few handy methods to work with it.
 
 **load_meta_from_file(filename: str or PosixPath)**
 
-This method allows you to load meta into the Meta class instance from previously generated yaml-file. Use it only with empty Meta class:
+This method allows you to load meta into the Meta class instance from previously generated yaml-file. Use it only with an empty Meta class:
 
 ```python
 >>> from foliant.meta.classes import Meta
@@ -115,7 +158,7 @@ This method returns an iterator which yields project's meta-sections (`Section` 
 
 **get_chapter(self, filename: str or PosixPath) -> Chapter**
 
-Get chapter (`Chapter` object) by its path. `filename` should be path to chapter relative to the Project dir (or absolute path).
+Get chapter (`Chapter` object) by its path. `filename` should be path to chapter relative to the Project dir (or an absolute path).
 
 **get_by_id(self, id_: str) -> Section**
 
@@ -123,7 +166,7 @@ Get section (`Section` object) by its id.
 
 **chapters**
 
-A property which holds the list of chapters (`Chapter` objects).
+This property holds the list of chapters (`Chapter` objects).
 
 ### The Chapter class
 
@@ -145,11 +188,11 @@ A property which holds the main section of the chapter.
 
 **name**
 
-Chapter's name as stated in foliant.yml (`'chapter.md'`).
+Chapter's name as stated in foliant.yml (e.g. `'chapter.md'`).
 
 **filename**
 
-Chapter's filepath string (`'src/chapter.md'`).
+Chapter's filepath string (e.g. `'src/chapter.md'`).
 
 ### The Section class
 
@@ -165,7 +208,7 @@ Returns section's source. The section title is also included in the output. If `
 
 **is_main(self) -> bool**
 
-Determine whether the section is main or not.
+Determine whether the section is a main section or not.
 
 *important properties*
 
@@ -180,31 +223,31 @@ Section's title.
 
 **chapter**
 
-Holds reference to section's chapter.
+Holds a reference to the section's `Chapter` object.
 
 **parent**
 
-Holds section's parent section. Main sections have `None` in this property.
+Holds a reference to the section's parent section (`Section` object). Main sections have `None` in this property.
 
 **children**
 
-Holds list of section's children in proper order.
+Holds list of section's children (`Section` objects) in proper order.
 
 **data**
 
-Holds a dictionary with fields and their values, defined in the `<meta>` tag (or YAML front matter if it is a main section).
+Holds a dictionary with meta properties and their values, defined in the `<meta>` tag (or the YAML front matter if it is a main section).
 
 **level**
 
-Section's level. Main section has level `0`, section, defined inside the `###` heading will have level `3`.
+Section's level. Main section has level `0`, section, defined inside the `###` heading will have the level `3`.
 
 **start** and **end**
 
-Section's offsets from the beginning of the chapter.
+Section's offsets from the beginning of the Markdown file.
 
 **filename**
 
-Holds reference to section's chapter's filename for easy access.
+Holds a reference to section's chapter's filename for easy access.
 
 # Meta Generate command
 
